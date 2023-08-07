@@ -1,0 +1,11 @@
+.resetVerify{
+  input{
+    font-size: 30px;
+    text-align: center;
+    letter-spacing: 15px;
+  }
+  input::placeholder{
+    font-size: 30px;
+    letter-spacing: 15px;
+  }
+}

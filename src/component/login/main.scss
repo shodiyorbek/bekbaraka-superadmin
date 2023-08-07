@@ -1,13 +1,17 @@
-body{
-    margin: 0 !important;
-    padding: 0 !important;
-}
+
 
 .main-login-form{
-background-color: #D9AFD9;
-    background-image: linear-gradient(0deg, #D9AFD9 0%, #97D9E1 100%);
+    background-image:url("./photo_2023-07-22_10-35-50.v4 (1).png") ;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
         height: 100vh;
         display: flex;
         align-items: center;
         overflow: hidden;
+
+}
+.ant-form-item-required{
+    color: #fff !important;
 }

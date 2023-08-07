@@ -8,6 +8,8 @@ const resetPassword = () => {
   
     const onFinish = (values) => {
     console.log(values)
+        localStorage.setItem("phone",values.phoneNumber)
+        window.location.href='/codeVerify'
 }
 
     return (
@@ -61,7 +63,7 @@ const resetPassword = () => {
           >
             Log in
                         </Button>
-                        <NavLink  className="login-form-forgot" to="">
+                        <NavLink  className="login-form-forgot" to="/login">
             Ortga
           </NavLink>
                     </Form.Item>
