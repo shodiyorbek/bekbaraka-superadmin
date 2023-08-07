@@ -1,27 +1,29 @@
-import React, { useState } from 'react';
-import { Button, Form, Input } from "antd";
-import "./main.css";
+import React from 'react';
+  import { Button, Form, Input } from "antd";
+import "../login/main.scss";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/bootstrap.css'
-
-const login = () => {
+import { NavLink } from 'react-router-dom';
+const resetPassword = () => {
+  
     const onFinish = (values) => {
-    console.log("Received values of form: ", values);
-  };
+    console.log(values)
+}
+
     return (
-      <div className="main-login-form">
-          <div className="main-form">
+       <div className="main-login-form">
+            <div className="main-form">
+                <h4 style={{ textAlign: 'center',marginBottom:10}}>Parolni tiklash uchun ro'yxatdan o'tgan telefon raqamindizni kiting</h4>
       <Form
         layout="vertical"
         name="normal_login"
         className="login-form"
         initialValues={{
           remember: true,
-        }}
+                    }}
         onFinish={onFinish}
       >
         <Form.Item
-            label="Telefon raqam"
             name="phoneNumber"
             valuePropName={"+998 (__) ___-__-__"}
             rules={[
@@ -32,36 +34,23 @@ const login = () => {
 
             ]}
         >
-            <PhoneInput
+              <PhoneInput
+              
                 countryCodeEditable={false}
+              
                 inputProps={{
                     name: 'phone',
                     autoFocus: true
                 }}
                 country={'uz'}
                 disableDropdown={true}
-                inputStyle={{width:'100%'}}
+                inputStyle={{width:'100%',height:40}}
 
 
             />
         </Form.Item>
-        <Form.Item
-          label={"Parol"}
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "Please input your Password!",
-            },
-          ]}
-        >
-          <Input.Password size={"large"} type="password" placeholder="" />
-        </Form.Item>
-        <Form.Item>
-          <a className="login-form-forgot" href="">
-            Forgot password
-          </a>
-        </Form.Item>
+       
+        
 
         <Form.Item>
           <Button
@@ -71,13 +60,18 @@ const login = () => {
             className="login-form-button"
           >
             Log in
-          </Button>
-        </Form.Item>
+                        </Button>
+                        <NavLink  className="login-form-forgot" to="">
+            Ortga
+          </NavLink>
+                    </Form.Item>
+                 
+          
+       
       </Form>
     </div>  
       </div>
-    
-  );
+    );
 };
 
-export default login;
+export default resetPassword;
