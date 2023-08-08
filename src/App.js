@@ -2,11 +2,15 @@ import React from 'react'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import { RequireAuth } from './RequireAuth'
 import { AuthProvider } from './auth'
-import Login from './component/login/login'
-import ResetPassword from './component/reset/resetPassword'
-import CodeVerify from './component/reset/verifyCode'
+import Login from './component/auth/login/login'
+import ResetPassword from './component/auth/reset/resetPassword'
+import CodeVerify from './component/auth/reset/verifyCode'
+import ResetPasswordMain from "./component/auth/reset/resetPasswordMain";
+import Home from "./component/file/home/Home";
+import Test from "./component/file/home/Test";
+import Dashboard from "./component/file/dashboard/Dashboard";
 
-// const LazyAbout = React.lazy(() => import('./About'))
+
 
 function App() {
   return (
@@ -15,24 +19,20 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/resetVerify' element={<ResetPassword />} />
         <Route path='/codeVerify' element={<CodeVerify />} />
-        {/* <Route path='/login' element={<Login />} /> */}
-        {/* <Route
-          path='/profile'
-          element={
-            <RequireAuth>
-              <Profile />
-            </RequireAuth>
-          }
-        /> */}
-        {/* <Route
-          path='about'
-          element={
-            <React.Suspense fallback='Loading...'>
-              <LazyAbout />
-            </React.Suspense>
-          }
-        /> */}
-        
+        <Route path='/resetPassword' element={<ResetPasswordMain />} />
+
+           <Route
+            path='/'
+            element={
+              <RequireAuth>
+                <Home />
+              </RequireAuth>
+            }
+           >
+               <Route path="dashboard" element={<Dashboard/>} />
+           </Route>
+
+
       </Routes>
     </AuthProvider>
   )

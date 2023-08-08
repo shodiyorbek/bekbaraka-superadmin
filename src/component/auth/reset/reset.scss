@@ -1,0 +1,26 @@
+.resetVerify{
+  input{
+    width: 100% !important;
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: 15px;
+  }
+  input::placeholder{
+    font-size: 25px;
+    letter-spacing: 15px;
+    text-align: center;
+
+  }
+  .login-form-forgot{
+    text-decoration: none;
+    color: #2e7fff;
+    font-weight: 700;
+
+  }
+
+}
+.numberInput::-webkit-inner-spin-button,
+.numberInput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

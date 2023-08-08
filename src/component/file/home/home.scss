@@ -1,0 +1,46 @@
+.home{
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  .sidebar{
+    background: #338CFF;
+    width: 320px;
+    height: 100vh;
+  }
+  .content{
+    width: 100%;
+  }
+  .nav-links{
+    display: flex;
+    align-items: start;
+    margin: 0 auto;
+    width: fit-content;
+    flex-direction: column !important;
+    .nav-link{
+      display: flex;
+      align-items: center;
+      gap: 27px;
+      color: #FFF;
+      font-family: Montserrat;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      text-decoration: none;
+      width: 236px;
+      height: 50px;
+      padding: 14px;
+      box-sizing: border-box;
+      &.active{
+        flex-shrink: 0;
+        border-radius: 10px;
+        background: #5AA2FF;
+      }
+    }
+
+
+  }
+  .bottom{
+    margin-top: 144px
+  }
+}
