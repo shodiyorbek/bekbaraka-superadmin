@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './Dashboard.scss'
-import { Badge} from "antd";
+import {Badge, Input, Pagination, Select, Table} from "antd";
+import { SearchOutlined } from '@ant-design/icons';
+import qs from "qs";
 const Dashboard = () => {
     const card = [
         {
@@ -32,6 +34,47 @@ const Dashboard = () => {
     boxShadow: '0px 2px 10px 0px rgba(175, 137, 255, 0.15)'}
         }
     ];
+    const columns = [
+        {
+            title: '№',
+            dataIndex: 'name',
+            width: '5%',
+        },
+        {
+            title: 'Product',
+            dataIndex: 'Product',
+            width: '20%',
+        },
+        {
+            title: 'Order ID',
+            dataIndex: 'Order ID',
+        }, {
+            title: 'Data',
+            dataIndex: 'Data',
+        },
+        {
+            title: 'Costumer Name',
+            dataIndex: 'Costumer Name',
+            width: '20%',
+        },{
+            title: 'Status',
+            dataIndex: 'Status',
+
+        },{
+            title: 'Amount',
+            dataIndex: 'Amount',
+
+        },
+    ];
+
+
+
+
+
+        const [data, setData] = useState();
+        const [loading, setLoading] = useState(false);
+
+
     return (
         <div className="container">
 <div className="topNavbar">
@@ -39,7 +82,7 @@ const Dashboard = () => {
     <div className="left">
         <div className="notfication">
             <a href="#">
-                <Badge dot={true}>
+                <Badge count={5}>
                     <i   className='bx bx-bell'></i>
                 </Badge>
             </a>
@@ -61,7 +104,7 @@ const Dashboard = () => {
 </div>
 <div className="statistic-cards">
     {card.map((card)=>(
-        <div style={card.style} className="card">
+        <div key={card.id} style={card.style} className="card">
            <div className="card-title">{card.title}</div>
             <div className="logo">
                 <img src={'/media'+card.logo} alt="Logo"/>
@@ -69,6 +112,33 @@ const Dashboard = () => {
            <div className="card-amount">{card.amount}</div>
         </div>
     ))}
+</div>
+            <div className="search-section">
+                <Input className={"search-input"} prefix={<SearchOutlined />} size={"large"} placeholder="Search" />
+                <Select
+                    size={"large"}
+
+                    defaultValue="lucy"
+                    style={{
+                        width: 120,
+                    }}
+
+                    options={[
+                        {
+                            value: 'lucy',
+                            label: 'Lucy',
+                        },
+                    ]}
+                />
+            </div>
+<div className="section-table">
+    <Table
+        columns={columns}
+        dataSource={data}
+        loading={loading}
+
+    />
+    <Pagination className="pagination" simple defaultCurrent={2} total={0} />
 </div>
         </div>
     );

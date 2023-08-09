@@ -6,11 +6,11 @@
   border-bottom: 1px solid black;
   .welcome{
     color: #000;
-    font-family: Montserrat;
-    font-size: 24px;
+    font-size: 43px;
     font-style: normal;
-    font-weight: 600;
-    line-height: normal;
+    font-weight: 500;
+    line-height: 119.7%; /* 51.471px */
+    letter-spacing: -0.86px;
   }
   .left{
     display: flex;
@@ -99,5 +99,18 @@
       letter-spacing: 1px;
     }
   }
+
+}
+.search-section{
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  .search-input{
+    max-width: 600px;
+    width: 100%;
+  }
+}
+.section-table{
+  margin-top: 30px;
 
 }

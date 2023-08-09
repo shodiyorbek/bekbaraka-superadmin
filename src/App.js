@@ -9,6 +9,11 @@ import ResetPasswordMain from "./component/auth/reset/resetPasswordMain";
 import Home from "./component/file/home/Home";
 import Test from "./component/file/home/Test";
 import Dashboard from "./component/file/dashboard/Dashboard";
+import NotFound from "./component/file/404/NotFound";
+import Moderator from "./component/file/Moderator/Moderator";
+import AddModerator from "./component/file/Moderator/AddModerator";
+import Supplier from "./component/file/Supplier/Supplier";
+import AddSupplier from "./component/file/Supplier/AddSupplier";
 
 
 
@@ -29,9 +34,18 @@ function App() {
               </RequireAuth>
             }
            >
-               <Route path="dashboard" element={<Dashboard/>} />
+               <Route path="" element={<Dashboard/>} />
+               <Route path="moderator" element={<Moderator/>} >
+                   <Route path="add" element={<AddModerator/>} />
+               </Route>
+               <Route path="supplier" element={<Supplier/>} >
+                   <Route path="add" element={<AddSupplier/>} />
+
+               </Route>
+
            </Route>
 
+          <Route path='*' element={<NotFound />} />
 
       </Routes>
     </AuthProvider>

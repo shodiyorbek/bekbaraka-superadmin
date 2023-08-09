@@ -1,14 +1,55 @@
 .home{
+  max-height: 100vh;
+  overflow: hidden;
   display: flex;
   align-content: center;
   justify-content: center;
+  .button-open{
+    position: absolute;
+    top: 20px;
+    left: 270px;
+    transition:  0.2s linear;
+    width: 40px;
+    height: 40px;
+    background: #338CFF;
+    color: #fff;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 20px 20px 0;
+    border: none;
+    &.active{
+      i{
+        transform: rotate(180deg);
+      }
+      left: 0;
+    }
+  }
   .sidebar{
     background: #338CFF;
-    width: 320px;
+
     height: 100vh;
+    overflow: hidden;
+    transform: translateX(-100%);
+    width: 0;
+    transition:  0.2s linear, width 0.2s linear ;
+    &.active{
+      width: 320px;
+      transform: translateX(0);
+    }
   }
   .content{
+    overflow-y: auto;
     width: 100%;
+    &::-webkit-scrollbar{
+      width: 7px;
+    }
+    &::-webkit-scrollbar-thumb{
+      border-radius: 15px;
+      background: linear-gradient(135deg, #6BAAFC 0%, #305FEC 100%);
+      box-shadow: 0px 2px 10px 0px rgba(175, 137, 255, 0.15);
+    }
   }
   .nav-links{
     display: flex;
