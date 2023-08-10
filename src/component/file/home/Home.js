@@ -37,6 +37,7 @@ const Home = () => {
 <img src='/media/img.png' alt={"Logo"}/>
 
 </div>
+                <div className="links">
                 <div className="nav-links">
                         <NavLink className="nav-link" to="/"><img src="/media/dashboard.svg" alt="Dashboard"/> Dashboard</NavLink>
                         <NavLink className="nav-link" to="/moderator"><img src="/media/moderator.svg" alt="Dashboard"/>Moderator</NavLink>
@@ -50,7 +51,7 @@ const Home = () => {
                     <NavLink className="nav-link" to="/settings"><img src="/media/setting.svg" alt="Dashboard"/>Settings</NavLink>
                     <button style={{background:'none',cursor:'pointer',border:'none'}} className="nav-link" onClick={logout}><img src="/media/logout.svg" alt="Dashboard"/> Log out</button>
                 </div>
-
+                </div>
             </div>
             <div className="content">
                 <Outlet/>
