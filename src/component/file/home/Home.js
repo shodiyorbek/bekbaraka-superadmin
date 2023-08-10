@@ -31,7 +31,7 @@ const Home = () => {
     return (
         <div className="home">
 
-            <div className={open?'sidebar active':'sidebar'}>
+            <div className={open?'sidebar ':'sidebar active'}>
 
 <div className="logo">
 <img src='/media/img.png' alt={"Logo"}/>
@@ -39,17 +39,17 @@ const Home = () => {
 </div>
                 <div className="links">
                 <div className="nav-links">
-                        <NavLink className="nav-link" to="/"><img src="/media/dashboard.svg" alt="Dashboard"/> Dashboard</NavLink>
-                        <NavLink className="nav-link" to="/moderator"><img src="/media/moderator.svg" alt="Dashboard"/>Moderator</NavLink>
-                        <NavLink className="nav-link" to="/supplier"><img src="/media/supplier.svg" alt="Dashboard"/>Supplier</NavLink>
-                        <NavLink className="nav-link" to="/seller"><img src="/media/seller.svg" alt="Dashboard"/> Seller</NavLink>
-                        <NavLink className="nav-link" to="/orders"><img src="/media/orders.svg" alt="Dashboard"/> Orders</NavLink>
-                        <NavLink className="nav-link" to="/product"><img src="/media/products.svg" alt="Dashboard"/> Product</NavLink>
-                        <NavLink className="nav-link" to="/payments"><img src="/media/payment.svg" alt="Dashboard"/> Payments</NavLink>
+                        <NavLink className="nav-link" to="/"><img src="/media/dashboard.svg" alt="Dashboard"/> <p>Dashboard</p> </NavLink>
+                        <NavLink className="nav-link" to="/moderator"><img src="/media/moderator.svg" alt="Dashboard"/> <p>Moderator</p></NavLink>
+                        <NavLink className="nav-link" to="/supplier"><img src="/media/supplier.svg" alt="Dashboard"/> <p>Supplier</p></NavLink>
+                        <NavLink className="nav-link" to="/seller"><img src="/media/seller.svg" alt="Dashboard"/>  <p>Seller</p></NavLink>
+                        <NavLink className="nav-link" to="/orders"><img src="/media/orders.svg" alt="Dashboard"/>  <p>Orders</p></NavLink>
+                        <NavLink className="nav-link" to="/product"><img src="/media/products.svg" alt="Dashboard"/> <p>Products</p> </NavLink>
+                        <NavLink className="nav-link" to="/payments"><img src="/media/payment.svg" alt="Dashboard"/>  <p>Payments</p></NavLink>
                 </div>
                 <div className="nav-links bottom">
-                    <NavLink className="nav-link" to="/settings"><img src="/media/setting.svg" alt="Dashboard"/>Settings</NavLink>
-                    <button style={{background:'none',cursor:'pointer',border:'none'}} className="nav-link" onClick={logout}><img src="/media/logout.svg" alt="Dashboard"/> Log out</button>
+                    <NavLink className="nav-link" to="/settings"><img src="/media/setting.svg" alt="Dashboard"/> <p>Settings</p></NavLink>
+                    <button style={{background:'none',cursor:'pointer',border:'none'}} className="nav-link" onClick={logout}><img src="/media/logout.svg" alt="Dashboard"/>  <p>Log out</p></button>
                 </div>
                 </div>
             </div>
