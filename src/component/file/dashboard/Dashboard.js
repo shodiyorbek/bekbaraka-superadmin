@@ -46,8 +46,8 @@ const Dashboard = () => {
             width: '20%',
         },
         {
-            title: 'Order ID',
-            dataIndex: 'Order ID',
+            title: 'Payment ID',
+            dataIndex: 'Payment ID',
         }, {
             title: 'Data',
             dataIndex: 'Data',

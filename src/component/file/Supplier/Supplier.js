@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Pagination, Switch, Table} from "antd";
+import {Button, Input, Pagination, Select, Switch, Table} from "antd";
 import './Supplier.scss'
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import classNames from "classnames";
+import {SearchOutlined} from "@ant-design/icons";
 
 const Supplier = () => {
     const navigate=useNavigate();
@@ -93,20 +94,31 @@ const Supplier = () => {
 const add = () =>{
     navigate('add')
 }
-    useEffect(() => {
-        console.log(currentPathname);
-        if (currentPathname === '/supplier/add') {
-            setCurrent(false);
-        } else if (currentPathname === '/supplier') {
-            setCurrent(true);
-        }
-    }, [currentPathname]);
+
     return (
-        <>{isCurrent? <div className="container moderator">
+        <>{currentPathname==='/supplier'? <div className="container moderator">
             <div className="up">
-                <Button onClick={add} size='large' className="button">
-                    + Add Supplier
-                </Button>
+                <Input className={"search-input"} prefix={<SearchOutlined />} size={"large"} placeholder="Search" />
+                <div>
+                    <Select
+                        size={"large"}
+
+                        defaultValue="lucy"
+                        style={{
+                            width: 120,
+                        }}
+
+                        options={[
+                            {
+                                value: 'lucy',
+                                label: 'Lucy',
+                            },
+                        ]}
+                    />
+                    <Button onClick={add} size='large' className="button">
+                        + Add Supplier
+                    </Button>
+                </div>
             </div>
             <div className="main">
                 <Table
@@ -121,7 +133,7 @@ const add = () =>{
                 />
                 <Pagination className="pagination" simple defaultCurrent={2} total={0} />
             </div>
-        </div>:<Outlet/>}</>
+        </div>:(currentPathname==='/supplier/add')?<Outlet/>:<></>}</>
 
     );
 };

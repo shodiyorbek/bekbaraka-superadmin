@@ -1,24 +1,20 @@
-import React, {useEffect, useState} from 'react';
-import {Button, Input, Pagination, Select, Switch, Table} from "antd";
-import './Moderator.scss'
-import {Outlet, useLocation, useNavigate} from "react-router-dom";
+import React, { useState} from 'react';
+import { Input, Pagination, Select, Switch, Table} from "antd";
+import './Seller.scss'
+import { useLocation, useNavigate} from "react-router-dom";
 import classNames from 'classnames';
 import {SearchOutlined} from "@ant-design/icons";
 
-const Moderator = () => {
-    const navigate=useNavigate();
-    const [isCurrent,setCurrent]=useState(true)
-    const location = useLocation();
-    const currentPathname = location.pathname;
+const Seller = () => {
     const [data, setData] = useState([
         {
             id:1,
             name:'Shodiyorbek',
             surname:'Tolqinov',
             gender:'male',
-            phone:'+998917381025',
-            photo:'/media/img_1.png',
-            address:'Toshkent shahri',
+            shop:'A-101',
+            amount:50,
+            supplier:'Shodiyorbek',
             status:false
 
         },
@@ -27,9 +23,9 @@ const Moderator = () => {
             name:'Shodiyorbek',
             surname:'Tolqinov',
             gender:'male',
-            phone:'+998917381025',
-            photo:'/media/img_1.png',
-            address:'Toshkent shahri',
+            shop:'A-101',
+            amount:50,
+            supplier:'Shodiyorbek',
             status:true
 
         },
@@ -38,9 +34,9 @@ const Moderator = () => {
             name:'Shodiyorbek',
             surname:'Tolqinov',
             gender:'male',
-            phone:'+998917381025',
-            photo:'/media/img_1.png',
-            address:'Toshkent shahri',
+            shop:'A-101',
+            amount:50,
+            supplier:'Shodiyorbek',
             status:true
 
         },
@@ -49,9 +45,9 @@ const Moderator = () => {
             name:'Shodiyorbek',
             surname:'Tolqinov',
             gender:'male',
-            phone:'+998917381025',
-            photo:'/media/img_1.png',
-            address:'Toshkent shahri',
+            shop:'A-101',
+            amount:50,
+            supplier:'Shodiyorbek',
             status:true
 
         },
@@ -60,9 +56,9 @@ const Moderator = () => {
             name:'Shodiyorbek',
             surname:'Tolqinov',
             gender:'male',
-            phone:'+998917381025',
-            photo:'/media/img_1.png',
-            address:'Toshkent shahri',
+            shop:'A-101',
+            amount:50,
+            supplier:'Shodiyorbek',
             status:true
 
         },
@@ -71,9 +67,9 @@ const Moderator = () => {
             name:'Shodiyorbek',
             surname:'Tolqinov',
             gender:'male',
-            phone:'+998917381025',
-            photo:'/media/img_1.png',
-            address:'Toshkent shahri',
+            shop:'A-101',
+            amount:50,
+            supplier:'Shodiyorbek',
             status:true
 
         },
@@ -82,9 +78,9 @@ const Moderator = () => {
             name:'Shodiyorbek',
             surname:'Tolqinov',
             gender:'male',
-            phone:'+998917381025',
-            photo:'/media/img_1.png',
-            address:'Toshkent shahri',
+            shop:'A-101',
+            amount:50,
+            supplier:'Shodiyorbek',
             status:true
 
         },
@@ -93,9 +89,9 @@ const Moderator = () => {
             name:'Shodiyorbek',
             surname:'Tolqinov',
             gender:'male',
-            phone:'+998917381025',
-            photo:'/media/img_1.png',
-            address:'Toshkent shahri',
+            shop:'A-101',
+            amount:50,
+            supplier:'Shodiyorbek',
             status:true
 
         },
@@ -104,9 +100,9 @@ const Moderator = () => {
             name:'Shodiyorbek',
             surname:'Tolqinov',
             gender:'male',
-            phone:'+998917381025',
-            photo:'/media/img_1.png',
-            address:'Toshkent shahri',
+            shop:'A-101',
+            amount:50,
+            supplier:'Shodiyorbek',
             status:true
 
         },
@@ -115,9 +111,9 @@ const Moderator = () => {
             name:'Shodiyorbek',
             surname:'Tolqinov',
             gender:'male',
-            phone:'+998917381025',
-            photo:'/media/img_1.png',
-            address:'Toshkent shahri',
+            shop:'A-101',
+            amount:50,
+            supplier:'Shodiyorbek',
             status:true
 
         }
@@ -137,23 +133,23 @@ const Moderator = () => {
         {
             title: 'Surname',
             dataIndex: 'surname',
-        }, {
-            title: 'Gender',
-            dataIndex: 'gender',
         },
         {
-            title: 'Phone',
-            dataIndex: 'phone',
-        },{
-            title: 'Photo',
-            dataIndex: 'photo',
-            render: (_, record) => (
-                <img style={{width:60,height:60}} src={record.photo} alt="imaga" />
-            ),
+            title: "Do'kon",
+            dataIndex: 'shop',
+        },
+        {
+            title: 'Gender',
+            dataIndex: 'gender',
+        }
+        ,{
+            title: 'Mahsulotlar soni',
+            dataIndex: 'amount',
 
-        },{
-            title: 'Address',
-            dataIndex: 'address',
+        },
+        {
+            title: 'Supplier',
+            dataIndex: 'supplier',
 
         }, {
             title: 'Status',
@@ -176,12 +172,9 @@ const Moderator = () => {
     };
 
 
-const add = () =>{
-    navigate('add')
-}
 
     return (
-        <>{currentPathname==='/moderator'? <div className="container moderator">
+       <div className="container moderator">
             <div className="up">
                 <Input className={"search-input"} prefix={<SearchOutlined />} size={"large"} placeholder="Search" />
                 <div>
@@ -200,9 +193,7 @@ const add = () =>{
                             },
                         ]}
                     />
-                    <Button onClick={add} size='large' className="button">
-                        + Add Moderator
-                    </Button>
+
                 </div>
 
             </div>
@@ -219,9 +210,9 @@ const add = () =>{
                 />
                 <Pagination className="pagination" simple defaultCurrent={2} total={0} />
             </div>
-        </div>:(currentPathname==='/moderator/add')?<Outlet/>:<></>}</>
+        </div>
 
     );
 };
 
-export default Moderator;
+export default Seller;

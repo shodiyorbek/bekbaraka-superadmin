@@ -34,9 +34,18 @@
 .up{
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: space-between;
     height: 100px;
     border-bottom: 1px solid black;
+    div{
+        display: flex;
+        gap: 20px;
+    }
+    .search-input{
+        display: flex;
+        max-width: 600px;
+        width: 100%;
+    }
 }
 
 .ant-table-row{

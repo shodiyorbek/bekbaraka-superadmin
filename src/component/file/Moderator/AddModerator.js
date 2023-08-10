@@ -57,6 +57,7 @@ const AddModerator = () => {
             <div className="main-section">
                 <Form
                     style={{width:'100%'}}
+                    className="form"
                     form={form}
                     onFinish={onFinish}
                     name="validateOnly"
@@ -93,9 +94,12 @@ const AddModerator = () => {
                     <Form.Item name="gender" label="Gender" rules={[{ required: true }]}>
                         <Select
                             size='large'
-                            defaultValue="male"
+                            defaultValue=""
                             options={[
                                 {
+                                    value: '',
+                                    label: 'Jinsni tanlang',
+                                },{
                                     value: 'male',
                                     label: 'Erkak',
                                 },
@@ -111,7 +115,7 @@ const AddModerator = () => {
                         <Input.Password size='large' />
                     </Form.Item>
                     <Form.Item label=" ">
-                        <Button size='large' className="button" type="primary" disabled={!submittable}>
+                        <Button size='large' htmlType='submit' className="button" type="primary" disabled={!submittable}>
                             Submit
                         </Button>
                     </Form.Item>

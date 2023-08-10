@@ -46,6 +46,16 @@ const AddSupplier = () => {
 
         }
     };
+    const [selectedSeller, setSelectedSeller] = useState([]);
+    const options = [
+        { label: 'Option 1', value: 'option1' },
+        { label: 'Option 2', value: 'option2' },
+        // ... add more options
+    ];
+
+    const handleSellerChange = (selectedValues) => {
+        setSelectedSeller(selectedValues);
+    };
 
     return (
         <div className="container add">
@@ -57,6 +67,7 @@ const AddSupplier = () => {
             <div className="main-section">
                 <Form
                     style={{width:'100%'}}
+                    className='form'
                     form={form}
                     onFinish={onFinish}
                     name="validateOnly"
@@ -71,25 +82,55 @@ const AddSupplier = () => {
                     <Form.Item  name="name" label="Name" rules={[{ required: true }]}>
                         <Input size='large' />
                     </Form.Item>
-                    <Form.Item name="surname" label="Surname" rules={[{ required: true }]}>
-                        <Input  size='large'/>
+
+                        <Form.Item  name="surname" label="Surname" rules={[{ required: true }]}>
+                        <Input size='large' />
                     </Form.Item>
-                    <Form.Item name="phone" label="Phone number" rules={[{ required: true }]}>
-                        <PhoneInput
+                        <Form.Item name="phone" label="Phone number" rules={[{ required: true }]}>
+                            <PhoneInput
 
-                            countryCodeEditable={false}
+                                countryCodeEditable={false}
 
-                            inputProps={{
-                                name: 'phone',
-                                autoFocus: true
-                            }}
-                            country={'uz'}
-                            disableDropdown={true}
-                            inputStyle={{width:'100%',height:40}}
+                                inputProps={{
+                                    name: 'phone',
+                                    autoFocus: true
+                                }}
+                                country={'uz'}
+                                disableDropdown={true}
+                                inputStyle={{width:'100%',height:40}}
 
 
-                        />
+                            />
+                        </Form.Item>
+                        <Form.Item  name="carname" label="Car name" rules={[{ required: true }]}>
+                            <Select
+                                size='large'
+                                defaultValue=""
+                                options={[
+                                    {
+                                        value: '',
+                                        label: 'Mashina turini tanlang',
+                                    },{
+                                        value: 'male',
+                                        label: 'Erkak',
+                                    },
+                                    {
+                                        value: 'female',
+                                        label: 'Ayol',
+                                    },
+
+                                ]}
+                            />
                     </Form.Item>
+
+
+                        <Form.Item  name="carnumber" label="Car number" rules={[{ required: true }]}>
+                        <Input size='large' />
+                    </Form.Item>
+
+
+
+
                     <Form.Item name="gender" label="Gender" rules={[{ required: true }]}>
                         <Select
                             size='large'
@@ -107,11 +148,26 @@ const AddSupplier = () => {
                             ]}
                         />
                     </Form.Item>
+
                     <Form.Item name="password" label="Password" rules={[{ required: true }]}>
                         <Input.Password size='large' />
                     </Form.Item>
+                        <Form.Item name="seller" label="Payment" rules={[{ required: true }]}>
+                            <Select
+                                mode="multiple"
+                                size="large"
+                                style={{ width: '100%' }}
+                                placeholder="Please select"
+                                options={options}
+                                onChange={handleSellerChange}
+                                filterOption={(input, option) =>
+                                    option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
+                            />
+                    </Form.Item>
+
                     <Form.Item label=" ">
-                        <Button size='large' className="button" type="primary" disabled={!submittable}>
+                        <Button htmlType={"submit"} size='large' className="button" type="primary" disabled={!submittable}>
                             Submit
                         </Button>
                     </Form.Item>
