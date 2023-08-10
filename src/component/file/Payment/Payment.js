@@ -76,6 +76,13 @@ const Payment = () => {
             price:'$42000',
             count:50,
 
+        },
+        {
+            id:11,
+            data:'10.08.2023',
+            price:'$42000',
+            count:50,
+
         }
     ]);
     const [loading, setLoading] = useState(false);
@@ -137,7 +144,7 @@ const Payment = () => {
                     loading={loading}
 
                 />
-                <Pagination className="pagination" simple defaultCurrent={2} total={0} />
+                {data.length>10?<Pagination className="pagination" simple defaultCurrent={2} total={0} />:<></>}
             </div>
         </div>
 

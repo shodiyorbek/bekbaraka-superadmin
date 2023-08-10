@@ -120,7 +120,8 @@ const Moderator = () => {
             address:'Toshkent shahri',
             status:true
 
-        }
+        },
+
     ]);
     const [loading, setLoading] = useState(false);
     const columns = [
@@ -217,7 +218,7 @@ const add = () =>{
                     }
 
                 />
-                <Pagination className="pagination" simple defaultCurrent={2} total={0} />
+                {data.length>10?<Pagination className="pagination" simple defaultCurrent={2} total={0} />:<></>}
             </div>
         </div>:(currentPathname==='/moderator/add')?<Outlet/>:<></>}</>
 

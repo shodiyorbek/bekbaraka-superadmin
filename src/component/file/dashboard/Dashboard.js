@@ -66,15 +66,8 @@ const Dashboard = () => {
 
         },
     ];
-
-
-
-
-
-        const [data, setData] = useState();
-        const [loading, setLoading] = useState(false);
-
-
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(false);
     return (
         <div className="container">
 <div className="topNavbar">
@@ -133,12 +126,12 @@ const Dashboard = () => {
             </div>
 <div className="section-table">
     <Table
+        pagination={false}
         columns={columns}
         dataSource={data}
         loading={loading}
-
     />
-    <Pagination className="pagination" simple defaultCurrent={2} total={0} />
+    {data.length<10?<></>: <Pagination className="pagination" simple defaultCurrent={2} total={0} />}
 </div>
         </div>
     );
