@@ -4,13 +4,29 @@ import "./main.scss";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/bootstrap.css'
 import {NavLink} from "react-router-dom";
+import axios from "../../axios/axios";
+import {toast, ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const login = () => {
     const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+    axios.post('/login/',values,{
+        headers:{
+            'Content-type':'Application/json'
+        }
+    }).then((res)=>{
+        localStorage.setItem("access",res.data.access)
+        localStorage.setItem("refresh",res.data.refresh)
+        window.location.href='/'
+    }).catch((error)=>{
+        toast.error('Bunday foydalanuvchi mavjud emas', {
+            position: toast.POSITION.TOP_RIGHT
+        });
+    })
   };
     return (
       <div className="main-login-form">
+          <ToastContainer/>
           <div className="main-form">
               <h1 style={{textAlign:'center'}}>Kirish</h1>
       <Form
@@ -27,7 +43,7 @@ const login = () => {
 
             style={{margin:0}}
             label="Telefon raqam"
-            name="phoneNumber"
+            name="phone_number"
             valuePropName={"+998 (__) ___-__-__"}
             rules={[
               {
