@@ -15,9 +15,17 @@ const login = () => {
             'Content-type':'Application/json'
         }
     }).then((res)=>{
-        localStorage.setItem("access",res.data.access)
-        localStorage.setItem("refresh",res.data.refresh)
-        window.location.href='/'
+        if(res.data.role==='superadmin'){
+            localStorage.setItem("access",res.data.access)
+            localStorage.setItem("refresh",res.data.refresh)
+            window.location.href='/'
+        }
+        else {
+            toast.error('Bunday foydalanuvchi mavjud emas', {
+                position: toast.POSITION.TOP_RIGHT
+            });
+        }
+
     }).catch((error)=>{
         toast.error('Bunday foydalanuvchi mavjud emas', {
             position: toast.POSITION.TOP_RIGHT
