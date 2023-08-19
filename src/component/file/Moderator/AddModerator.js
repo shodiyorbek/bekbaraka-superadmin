@@ -12,11 +12,9 @@ const AddModerator = () => {
     const [form] = Form.useForm();
     const [submittable,setSubmittable]= useState(false)
     const [image,setImage]=useState()
-
     const [imagePreviewUrl, setImagePreviewUrl] = useState(
         "https://cdn.landesa.org/wp-content/uploads/default-user-image.png"
     );
-
     const onFinish = (values) => {
         setSubmittable(true)
         const formData = new FormData;

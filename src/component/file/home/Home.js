@@ -23,6 +23,7 @@ const Home = () => {
             icon: <ExclamationCircleFilled />,
             content: 'When clicked the OK button, this dialog will be closed after 1 second',
             onOk() {
+                localStorage.clear()
                navigate('/login')
             },
             onCancel() {},

@@ -63,8 +63,11 @@ const Moderator = () => {
         }).then((res)=>{
             setLoading(false)
             setData(res.data.results)
-        }).then((error)=>{
-            console.log(error)
+        }).catch((error)=>{
+            if(error.response.status===401){
+                localStorage.clear()
+                window.location.href='/login'
+            }
         })
     }, []);
     const handleStatusChange = (id, checked) => {
