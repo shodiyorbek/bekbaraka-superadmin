@@ -75,6 +75,13 @@ const Moderator = () => {
             item.id === id ? { ...item, status: checked } : item
         );
         setData(updatedData);
+        axios.patch(`/moderator/change/status/${id}`,{status:checked},{
+            headers:{
+                Authorization:`Bearer ${localStorage.getItem('access')}`
+            }
+        }).then((res)=>{
+            console.log(res)
+        })
     };
 
 
