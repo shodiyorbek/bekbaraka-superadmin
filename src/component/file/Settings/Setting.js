@@ -1,19 +1,51 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './Settings.scss'
 import {Button, Checkbox, Form, Input, message, Radio, Select} from "antd";
 import ImgUpload from "../lib/ImageUploader/Uploader";
 import PhoneInput from "react-phone-input-2";
+import axios from "../../axios/axios";
+import jwt_decode from "jwt-decode";
 
 const Setting = () => {
     const [form] = Form.useForm();
-    const [selectedLanguage, setSelectedLanguage] = useState('uz'); // State to hold selected language
+    const [selectedLanguage, setSelectedLanguage] = useState('uz');
     const [imagePreviewUrl, setImagePreviewUrl] = useState(
         "https://cdn.landesa.org/wp-content/uploads/default-user-image.png"
     );
 
     const onFinish = (values) => {
         console.log(values);
+        const token = localStorage.getItem('access');
+        const decoded = jwt_decode(token);
+        const userId = decoded?.user_id;
+        axios.patch(`/change-information/${userId}`,values,{
+            headers:{
+                Authorization:`Bearer ${localStorage.getItem('access')}`
+            }
+        }).then((res)=>{
+            console.log(res)
+        })
     };
+    useEffect(() => {
+        const token = localStorage.getItem('access');
+        const decoded = jwt_decode(token);
+        const userId = decoded?.user_id;
+        console.log(userId)
+
+        axios.get(`/super/get_superuser/${userId}/`,{
+            headers:{
+                Authorization:`Bearer ${localStorage.getItem('access')}`
+            }
+        }).then((res)=>{
+            console.log(res.data)
+           form.setFieldsValue(res.data)
+        }).catch((err)=>{
+            // if(err.response.status===401){
+            //     localStorage.clear()
+            //     window.location.href = '/login'
+            // }
+        })
+    }, []);
     const photoUpload = (e) => {
         e.preventDefault();
         const reader = new FileReader();
@@ -28,7 +60,8 @@ const Setting = () => {
         }
     };
     const handleButtonClick = (value) => {
-        setSelectedLanguage(value); // Update selected language state when button is clicked
+        setSelectedLanguage(value);
+
     };
     return (
         <div className="container settings">
@@ -41,25 +74,22 @@ const Setting = () => {
                         className="form"
                         form={form}
                         onFinish={onFinish}
-                        name="validateOnly"
                         layout="vertical"
                         autoComplete="off"
                     >
-                        <Form.Item className="image" name="image" label="" >
+                        <Form.Item className="image" name="photo" label="" >
                             <ImgUpload onChange={photoUpload} src={imagePreviewUrl} />
                         </Form.Item>
                         <div className="main-inputs">
-                            <Form.Item  name="name" label="Name" >
+                            <Form.Item  name="first_name" label="Name" >
                                 <Input size='large' />
                             </Form.Item>
-                            <Form.Item name="surname" label="Surname">
+                            <Form.Item name="last_name" label="Surname">
                                 <Input  size='large'/>
                             </Form.Item>
-                            <Form.Item name="phone" label="Phone number" >
+                            <Form.Item name="phone_number" label="Phone number" >
                                 <PhoneInput
-
                                     countryCodeEditable={false}
-
                                     inputProps={{
                                         name: 'phone',
                                         autoFocus: true
@@ -71,7 +101,7 @@ const Setting = () => {
 
                                 />
                             </Form.Item>
-                            <Form.Item name="gender" label="Gender" >
+                            <Form.Item name="sex" label="Gender" >
                                 <Select
                                     size='large'
                                     defaultValue=""
@@ -97,6 +127,7 @@ const Setting = () => {
                             <Form.Item name="confirm" label="Confirm password" >
                                 <Input.Password size='large'/>
                             </Form.Item>
+
 
                             <Form.Item label=" ">
                                 <Button size='large' htmlType='submit' className="button" type="primary" >
