@@ -5,21 +5,33 @@ import ImgUpload from "../lib/ImageUploader/Uploader";
 import PhoneInput from "react-phone-input-2";
 import axios from "../../axios/axios";
 import jwt_decode from "jwt-decode";
+import {toast} from "react-toastify";
 
 const Setting = () => {
     const [form] = Form.useForm();
     const [selectedLanguage, setSelectedLanguage] = useState('uz');
+    const [image,setImage]=useState()
     const [imagePreviewUrl, setImagePreviewUrl] = useState(
         "https://cdn.landesa.org/wp-content/uploads/default-user-image.png"
     );
+    const [isSetImage,setIsSetImage]=useState(false)
 
     const onFinish = (values) => {
         console.log(values);
+        const formData = new FormData();
+        if(isSetImage){
+            formData.append('photo',image)
+        }
+        formData.append('first_name',values.first_name)
+        formData.append('last_name',values.last_name)
+        formData.append('sex',values.sex)
+
         const token = localStorage.getItem('access');
         const decoded = jwt_decode(token);
         const userId = decoded?.user_id;
-        axios.patch(`/change-information/${userId}`,values,{
+        axios.patch(`/change-information/${userId}/`,formData,{
             headers:{
+                'Content-type':'multipart/form-data',
                 Authorization:`Bearer ${localStorage.getItem('access')}`
             }
         }).then((res)=>{
@@ -38,7 +50,11 @@ const Setting = () => {
             }
         }).then((res)=>{
             console.log(res.data)
+            setImagePreviewUrl(res.data.photo)
            form.setFieldsValue(res.data)
+            toast.info('User muofiqiatli tahrirlandi', {
+                position: toast.POSITION.TOP_RIGHT
+            });
         }).catch((err)=>{
             // if(err.response.status===401){
             //     localStorage.clear()
@@ -48,9 +64,11 @@ const Setting = () => {
     }, []);
     const photoUpload = (e) => {
         e.preventDefault();
+        setIsSetImage(true)
         const reader = new FileReader();
         const files = e.target.files;
-
+        const value = e.target.type === "file" ? e.target.files[0] : e.target.value;
+        setImage(value)
         if (files && files.length > 0) {
             const file = files[0];
             reader.onloadend = () => {
@@ -121,12 +139,7 @@ const Setting = () => {
                                     ]}
                                 />
                             </Form.Item>
-                            <Form.Item name="password" label="New password" >
-                                <Input.Password size='large'/>
-                            </Form.Item>
-                            <Form.Item name="confirm" label="Confirm password" >
-                                <Input.Password size='large'/>
-                            </Form.Item>
+
 
 
                             <Form.Item label=" ">
