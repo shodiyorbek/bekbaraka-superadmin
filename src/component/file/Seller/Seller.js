@@ -1,155 +1,54 @@
-import React, { useState} from 'react';
-import { Input, Pagination, Select, Switch, Table} from "antd";
+import React, {useEffect, useState} from 'react';
+import {Button, Input, Pagination, Select, Switch, Table} from "antd";
 import './Seller.scss'
-import { useLocation, useNavigate} from "react-router-dom";
+import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import classNames from 'classnames';
 import {SearchOutlined} from "@ant-design/icons";
+import axios from "../../axios/axios";
+import {toast, ToastContainer} from "react-toastify";
 
 const Seller = () => {
-    const [data, setData] = useState([
-        {
-            id:1,
-            name:'Shodiyorbek',
-            surname:'Tolqinov',
-            gender:'male',
-            shop:'A-101',
-            amount:50,
-            supplier:'Shodiyorbek',
-            status:false
-
-        },
-        {
-            id:2,
-            name:'Shodiyorbek',
-            surname:'Tolqinov',
-            gender:'male',
-            shop:'A-101',
-            amount:50,
-            supplier:'Shodiyorbek',
-            status:true
-
-        },
-        {
-            id:3,
-            name:'Shodiyorbek',
-            surname:'Tolqinov',
-            gender:'male',
-            shop:'A-101',
-            amount:50,
-            supplier:'Shodiyorbek',
-            status:true
-
-        },
-        {
-            id:4,
-            name:'Shodiyorbek',
-            surname:'Tolqinov',
-            gender:'male',
-            shop:'A-101',
-            amount:50,
-            supplier:'Shodiyorbek',
-            status:true
-
-        },
-        {
-            id:5,
-            name:'Shodiyorbek',
-            surname:'Tolqinov',
-            gender:'male',
-            shop:'A-101',
-            amount:50,
-            supplier:'Shodiyorbek',
-            status:true
-
-        },
-        {
-            id:6,
-            name:'Shodiyorbek',
-            surname:'Tolqinov',
-            gender:'male',
-            shop:'A-101',
-            amount:50,
-            supplier:'Shodiyorbek',
-            status:true
-
-        },
-        {
-            id:7,
-            name:'Shodiyorbek',
-            surname:'Tolqinov',
-            gender:'male',
-            shop:'A-101',
-            amount:50,
-            supplier:'Shodiyorbek',
-            status:true
-
-        },
-        {
-            id:8,
-            name:'Shodiyorbek',
-            surname:'Tolqinov',
-            gender:'male',
-            shop:'A-101',
-            amount:50,
-            supplier:'Shodiyorbek',
-            status:true
-
-        },
-        {
-            id:9,
-            name:'Shodiyorbek',
-            surname:'Tolqinov',
-            gender:'male',
-            shop:'A-101',
-            amount:50,
-            supplier:'Shodiyorbek',
-            status:true
-
-        },
-        {
-            id:10,
-            name:'Shodiyorbek',
-            surname:'Tolqinov',
-            gender:'male',
-            shop:'A-101',
-            amount:50,
-            supplier:'Shodiyorbek',
-            status:true
-
-        }
-    ]);
-    const [loading, setLoading] = useState(false);
+    const navigate=useNavigate();
+    const [isCurrent,setCurrent]=useState(true)
+    const location = useLocation();
+    const currentPathname = location.pathname;
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
     const columns = [
         {
             title: '№',
-            dataIndex: 'id',
+            dataIndex: 'index',
             width: '5%',
+            render: (_, __, rowIndex) => rowIndex + 1
         },
         {
             title: 'Name',
-            dataIndex: 'name',
+            dataIndex: 'first_name',
 
         },
         {
-            title: 'Surname',
-            dataIndex: 'surname',
-        },
-        {
-            title: "Do'kon",
-            dataIndex: 'shop',
-        },
-        {
+            title: 'Last name',
+            dataIndex: 'last_name',
+        }, {
             title: 'Gender',
-            dataIndex: 'gender',
-        }
-        ,{
-            title: 'Mahsulotlar soni',
-            dataIndex: 'amount',
-
+            dataIndex: 'sex',
         },
         {
-            title: 'Supplier',
-            dataIndex: 'supplier',
+            title: 'Phone',
+            dataIndex: 'phone_number',
+        },{
+            title: 'Photo',
+            dataIndex: 'photo',
+            render: (_, record) => (
+                <img style={{width:60,height:60}} src={record.photo} alt="imaga" />
+            ),
+
+        },{
+            title: 'Shop',
+            dataIndex: '1',
+            render: (_, record) => (
+                <li>{record.market.name}</li>
+            ),
 
         }, {
             title: 'Status',
@@ -164,17 +63,50 @@ const Seller = () => {
         },
     ];
 
+    useEffect(() => {
+        axios.get('/list/sellers',{
+            headers:{
+                Authorization:`Bearer ${localStorage.getItem('access')}`
+            }
+        }).then((res)=>{
+            setLoading(false)
+            console.log(res.data.results)
+            setData(res.data.results)
+        }).catch((error)=>{
+            console.log(error)
+        })
+    }, []);
     const handleStatusChange = (id, checked) => {
         const updatedData = data.map((item) =>
             item.id === id ? { ...item, status: checked } : item
         );
+        axios.patch(`/seller/change/status/${id}`,{status:checked},{
+            headers:{
+                Authorization:`Bearer ${localStorage.getItem('access')}`
+            }
+        }).then((res)=>{
+            console.log(res)
+            toast.info("Sotuvchi statusi o'zgartirildi", {
+                position: toast.POSITION.TOP_RIGHT
+            });
+
+        }).catch((err)=>{
+            if(err.response.status===401){
+                localStorage.clear()
+                navigate('/login')
+            }
+        })
         setData(updatedData);
     };
 
 
+    const add = () =>{
+        navigate('add')
+    }
 
     return (
-       <div className="container moderator">
+        <>{currentPathname==='/seller'? <div className="container moderator">
+            <ToastContainer/>
             <div className="up">
                 <Input className={"search-input"} prefix={<SearchOutlined />} size={"large"} placeholder="Search" />
                 <div>
@@ -193,7 +125,9 @@ const Seller = () => {
                             },
                         ]}
                     />
-
+                    <Button onClick={add} size='large' className="button">
+                        + Add Moderator
+                    </Button>
                 </div>
 
             </div>
@@ -208,9 +142,9 @@ const Seller = () => {
                     }
 
                 />
-                {data.length>10?<Pagination className="pagination" simple defaultCurrent={2} total={0} />:<></>}
+                {/*{data.length>10?<Pagination className="pagination" simple defaultCurrent={2} total={0} />:<></>}*/}
             </div>
-        </div>
+        </div>:(currentPathname==='/seller/add')?<Outlet/>:<></>}</>
 
     );
 };

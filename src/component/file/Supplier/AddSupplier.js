@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Form, Input, message, Select} from 'antd';
 import './Supplier.scss';
 import { useNavigate } from 'react-router-dom';
 import ImgUpload from "../lib/ImageUploader/Uploader";
 import PhoneInput from "react-phone-input-2";
+import axios from "../../axios/axios";
 
 const AddSupplier = () => {
     const navigate = useNavigate();
@@ -12,10 +13,36 @@ const AddSupplier = () => {
     const [imagePreviewUrl, setImagePreviewUrl] = useState(
         "https://cdn.landesa.org/wp-content/uploads/default-user-image.png"
     );
+    const [cars,setCars]=useState()
+    const [seller,setSeller]=useState()
+    const [image,setImage]=useState()
 
     const onFinish = (values) => {
-        console.log(values);
-        message.success('Form submitted successfully');
+        const formData = new FormData()
+        formData.append('first_name',values.first_name)
+        formData.append('last_name',values.last_name)
+        formData.append('phone_number',values.phone_number)
+        formData.append('password',values.password)
+        formData.append('photo',image)
+        formData.append('sex',values.sex)
+        formData.append('car_number',values.car_number)
+        formData.append('car_name',values.car_name)
+        formData.append('seller',values.seller)
+        axios.post('/supplier/create', formData,{
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('access')}`
+            }
+        }).then((res) => {
+
+      console.log(res)
+
+        }).catch((err) => {
+            console.log(err)
+            if (err.response.status === 401) {
+                localStorage.clear()
+                window.location.href = '/login'
+            }
+        })
     };
 
     const back = () => {
@@ -26,7 +53,8 @@ const AddSupplier = () => {
         e.preventDefault();
         const reader = new FileReader();
         const files = e.target.files;
-
+        const value = e.target.type === "file" ? e.target.files[0] : e.target.value;
+        setImage(value)
         if (files && files.length > 0) {
             const file = files[0];
             reader.onloadend = () => {
@@ -47,12 +75,51 @@ const AddSupplier = () => {
         }
     };
     const [selectedSeller, setSelectedSeller] = useState([]);
-    const options = [
-        { label: 'Option 1', value: 'option1' },
-        { label: 'Option 2', value: 'option2' },
-        // ... add more options
-    ];
 
+    const getCars = () => {
+        axios.get('/car/create_or_get', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('access')}`
+            }
+        }).then((res) => {
+
+
+            const cars = res.data.results.map((temp) => ({
+                 label: temp.name, value: temp.id
+            }));
+            console.log(cars)
+            setCars(cars)
+
+        }).catch((err) => {
+            if (err.response.status === 401) {
+                localStorage.clear()
+                window.location.href = '/login'
+            }
+        })
+    }
+    const getSeller = () => {
+        axios.get('/list/sellers', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('access')}`
+            }
+        }).then((res) => {
+
+            const seller = res.data.results.map((temp) => ({
+                label: temp.first_name, value: temp.id
+            }));
+            setSeller(seller)
+
+        }).catch((err) => {
+            if (err.response.status === 401) {
+                localStorage.clear()
+                window.location.href = '/login'
+            }
+        })
+    }
+    useEffect(() => {
+        getCars()
+        getSeller()
+    }, []);
     const handleSellerChange = (selectedValues) => {
         setSelectedSeller(selectedValues);
     };
@@ -106,20 +173,7 @@ const AddSupplier = () => {
                             <Select
                                 size='large'
                                 defaultValue=""
-                                options={[
-                                    {
-                                        value: '',
-                                        label: 'Mashina turini tanlang',
-                                    },{
-                                        value: 'male',
-                                        label: 'Erkak',
-                                    },
-                                    {
-                                        value: 'female',
-                                        label: 'Ayol',
-                                    },
-
-                                ]}
+                                options={cars}
                             />
                     </Form.Item>
 
@@ -152,13 +206,13 @@ const AddSupplier = () => {
                     <Form.Item name="password" label="Password" rules={[{ required: true }]}>
                         <Input.Password size='large' />
                     </Form.Item>
-                        <Form.Item name="seller" label="Payment" rules={[{ required: true }]}>
+                        <Form.Item name="seller" label="Sotuvchi" rules={[{ required: true }]}>
                             <Select
                                 mode="multiple"
                                 size="large"
                                 style={{ width: '100%' }}
                                 placeholder="Please select"
-                                options={options}
+                                options={seller}
                                 onChange={handleSellerChange}
                                 filterOption={(input, option) =>
                                     option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0

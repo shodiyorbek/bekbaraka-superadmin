@@ -45,7 +45,6 @@ function App() {
                </Route>
                <Route path="supplier" element={<Supplier/>} >
                    <Route path="add" element={<AddSupplier/>} />
-
                </Route>
                <Route path="seller" element={<Seller/>} />
                <Route path="orders" element={<Order/>} />
