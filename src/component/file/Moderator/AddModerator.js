@@ -41,9 +41,20 @@ const AddModerator = () => {
         }).catch((error)=>{
             setSubmittable(false)
             console.log(error)
-            toast.error(error.response.data.message[0], {
-                position: toast.POSITION.TOP_RIGHT
-            });
+            if(error.response.status===401){
+                localStorage.clear()
+                window.location.href='/login'
+            }
+            if(error.response.data.message!==undefined){
+                toast.error(error.response.data.message[0], {
+                    position: toast.POSITION.TOP_RIGHT
+                });
+            }
+            else {
+                toast.error('Password must be number and letters', {
+                    position: toast.POSITION.TOP_RIGHT
+                });
+            }
         })
     };
 

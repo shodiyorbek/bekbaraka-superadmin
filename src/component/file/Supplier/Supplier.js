@@ -4,70 +4,48 @@ import './Supplier.scss'
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import classNames from "classnames";
 import {SearchOutlined} from "@ant-design/icons";
+import axios from "../../axios/axios";
+import {toast} from "react-toastify";
 
 const Supplier = () => {
     const navigate=useNavigate();
     const [isCurrent,setCurrent]=useState(true)
     const location = useLocation();
     const currentPathname = location.pathname;
-    const [data, setData] = useState([
-        {
-            id:1,
-            name:'Shodiyorbek',
-            surname:'Tolqinov',
-            gender:'male',
-            phone:'+998917381025',
-            carname:'Taxoe',
-            cartype:'Yengil',
-            carnumber:'01 A 777 AA',
-            status:false
-
-        },
-        {
-            id:2,
-            name:'Shodiyorbek',
-            surname:'Tolqinov',
-            gender:'male',
-            phone:'+998917381025',
-            carname:'Bugatti',
-            cartype:'Yengil',
-            carnumber:'01 A 777 AA',
-            status:true
-
-        }
-    ]);
+    const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const columns = [
         {
             title: '№',
-            dataIndex: 'id',
+            dataIndex: 'index',
             width: '5%',
+            render: (_, __, rowIndex) => rowIndex + 1
         },
         {
             title: 'Name',
-            dataIndex: 'name',
+            dataIndex: 'first_name',
 
         },
         {
             title: 'Surname',
-            dataIndex: 'surname',
+            dataIndex: 'last_name',
         }, {
             title: 'Gender',
-            dataIndex: 'gender',
+            dataIndex: 'sex',
         },
         {
             title: 'Phone',
-            dataIndex: 'phone',
-        },{
-            title: 'Car name',
-            dataIndex: 'carname',
+            dataIndex: 'phone_number',
         },{
             title: 'Car type',
-            dataIndex: 'cartype',
+            dataIndex: 'car_model.name',
+            render: (_, record) => (
+                <div>{record.car_model.name}</div>
+            ),
 
         },{
             title: 'Car number',
-            dataIndex: 'carnumber',
+            dataIndex: 'car_number',
 
         },{
             title: 'Status',
@@ -89,36 +67,37 @@ const Supplier = () => {
         );
         setData(updatedData);
     };
+    const getSuppliers = ()=>{
+        axios.get('/list/suppliers/',{
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('access')}`,
+                'Content-type':'multipart/formdata'
+            }
+        }).then((res) => {
 
+            console.log(res)
+            setData(res.data.results)
 
-const add = () =>{
-    navigate('add')
-}
+        }).catch((err) => {
+            console.log(err)
+            if(err.response.status===401){
+                localStorage.clear()
+                window.location.href='/login'
+            }
+
+        })
+    }
+
+    useEffect(() => {
+        getSuppliers()
+    }, []);
+
 
     return (
-        <>{currentPathname==='/supplier'? <div className="container moderator">
+        <div className="container moderator">
             <div className="up">
                 <Input className={"search-input"} prefix={<SearchOutlined />} size={"large"} placeholder="Search" />
-                <div>
-                    <Select
-                        size={"large"}
 
-                        defaultValue="lucy"
-                        style={{
-                            width: 120,
-                        }}
-
-                        options={[
-                            {
-                                value: 'lucy',
-                                label: 'Lucy',
-                            },
-                        ]}
-                    />
-                    <Button onClick={add} size='large' className="button">
-                        + Add Supplier
-                    </Button>
-                </div>
             </div>
             <div className="main">
                 <Table
@@ -133,7 +112,7 @@ const add = () =>{
                 />
                 {data.length>10?<Pagination className="pagination" simple defaultCurrent={2} total={0} />:<></>}
             </div>
-        </div>:(currentPathname==='/supplier/add')?<Outlet/>:<></>}</>
+        </div>
 
     );
 };

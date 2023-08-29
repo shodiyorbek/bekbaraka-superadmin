@@ -100,35 +100,14 @@ const Seller = () => {
     };
 
 
-    const add = () =>{
-        navigate('add')
-    }
+
 
     return (
-        <>{currentPathname==='/seller'? <div className="container moderator">
+         <div className="container moderator">
             <ToastContainer/>
             <div className="up">
                 <Input className={"search-input"} prefix={<SearchOutlined />} size={"large"} placeholder="Search" />
-                <div>
-                    <Select
-                        size={"large"}
 
-                        defaultValue="lucy"
-                        style={{
-                            width: 120,
-                        }}
-
-                        options={[
-                            {
-                                value: 'lucy',
-                                label: 'Lucy',
-                            },
-                        ]}
-                    />
-                    <Button onClick={add} size='large' className="button">
-                        + Add Moderator
-                    </Button>
-                </div>
 
             </div>
             <div className="main">
@@ -144,7 +123,7 @@ const Seller = () => {
                 />
                 {/*{data.length>10?<Pagination className="pagination" simple defaultCurrent={2} total={0} />:<></>}*/}
             </div>
-        </div>:(currentPathname==='/seller/add')?<Outlet/>:<></>}</>
+        </div>
 
     );
 };

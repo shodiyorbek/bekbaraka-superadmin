@@ -12,7 +12,6 @@ import NotFound from "./component/file/404/NotFound";
 import Moderator from "./component/file/Moderator/Moderator";
 import AddModerator from "./component/file/Moderator/AddModerator";
 import Supplier from "./component/file/Supplier/Supplier";
-import AddSupplier from "./component/file/Supplier/AddSupplier";
 import Seller from "./component/file/Seller/Seller";
 import Order from "./component/file/Order/Order";
 import Product from "./component/file/Product/Product";
@@ -43,9 +42,8 @@ function App() {
                <Route path="moderator" element={<Moderator/>} >
                    <Route path="add" element={<AddModerator/>} />
                </Route>
-               <Route path="supplier" element={<Supplier/>} >
-                   <Route path="add" element={<AddSupplier/>} />
-               </Route>
+               <Route path="supplier" element={<Supplier/>} />
+
                <Route path="seller" element={<Seller/>} />
                <Route path="orders" element={<Order/>} />
                <Route path="product" element={<Product/>} />

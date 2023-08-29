@@ -5,6 +5,7 @@ import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import classNames from 'classnames';
 import {SearchOutlined} from "@ant-design/icons";
 import axios from "../../axios/axios";
+import {toast, ToastContainer} from "react-toastify";
 
 const Moderator = () => {
     const navigate=useNavigate();
@@ -74,41 +75,38 @@ const Moderator = () => {
         const updatedData = data.map((item) =>
             item.id === id ? { ...item, status: checked } : item
         );
-        setData(updatedData);
-        axios.patch(`/moderator/change/status/${id}`,{status:checked},{
+        axios.patch(`/seller/change/status/${id}`,{status:checked},{
             headers:{
                 Authorization:`Bearer ${localStorage.getItem('access')}`
             }
         }).then((res)=>{
             console.log(res)
+            toast.info("Sotuvchi statusi o'zgartirildi", {
+                position: toast.POSITION.TOP_RIGHT
+            });
+
+        }).catch((err)=>{
+            if(err.response.status===401){
+                localStorage.clear()
+                navigate('/login')
+            }
         })
+        setData(updatedData);
     };
 
 
-const add = () =>{
+
+    const add = () =>{
     navigate('add')
 }
 
     return (
         <>{currentPathname==='/moderator'? <div className="container moderator">
+            <ToastContainer/>
             <div className="up">
                 <Input className={"search-input"} prefix={<SearchOutlined />} size={"large"} placeholder="Search" />
                 <div>
-                    <Select
-                        size={"large"}
 
-                        defaultValue="lucy"
-                        style={{
-                            width: 120,
-                        }}
-
-                        options={[
-                            {
-                                value: 'lucy',
-                                label: 'Lucy',
-                            },
-                        ]}
-                    />
                     <Button onClick={add} size='large' className="button">
                         + Add Moderator
                     </Button>

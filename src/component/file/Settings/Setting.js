@@ -5,7 +5,7 @@ import ImgUpload from "../lib/ImageUploader/Uploader";
 import PhoneInput from "react-phone-input-2";
 import axios from "../../axios/axios";
 import jwt_decode from "jwt-decode";
-import {toast} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 
 const Setting = () => {
     const [form] = Form.useForm();
@@ -36,6 +36,9 @@ const Setting = () => {
             }
         }).then((res)=>{
             console.log(res)
+            toast.info('User muofiqiatli tahrirlandi', {
+                position: toast.POSITION.TOP_RIGHT
+            });
         })
     };
     useEffect(() => {
@@ -52,9 +55,7 @@ const Setting = () => {
             console.log(res.data)
             setImagePreviewUrl(res.data.photo)
            form.setFieldsValue(res.data)
-            toast.info('User muofiqiatli tahrirlandi', {
-                position: toast.POSITION.TOP_RIGHT
-            });
+
         }).catch((err)=>{
             // if(err.response.status===401){
             //     localStorage.clear()
@@ -83,6 +84,7 @@ const Setting = () => {
     };
     return (
         <div className="container settings">
+            <ToastContainer/>
             <div className="up" ></div>
             <div className="user">
                 <h1>Profile</h1>
