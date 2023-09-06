@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import './Dashboard.scss'
-import {Badge, Input, Pagination, Select, Spin, Table} from "antd";
+import { Input, Pagination, Select, Spin, Table} from "antd";
 import { SearchOutlined } from '@ant-design/icons';
 import axios from "../../axios/axios";
 import jwt_decode from 'jwt-decode';
+import {useNavigate} from "react-router-dom";
 
 const Dashboard = () => {
     const card = [
@@ -69,6 +70,7 @@ const Dashboard = () => {
         },
     ];
     const [data, setData] = useState([]);
+    const navigate=useNavigate();
     const [loading, setLoading] = useState(false);
     const [user,setUser]=useState({})
     const [isLoaded,setIsloaded]=useState(false)
@@ -100,16 +102,10 @@ if(err.response.status===401){
         <div className="container">
 
             <div className="topNavbar">
-                <div className="welcome">Welcome back, {user.first_name} {user.last_name}</div>
+                <div className="welcome">Welcome back, {user.first_name} </div>
                 <div className="left">
-                    <div className="notfication">
-                        <a href="#">
-                            <Badge count={5}>
-                                <i   className='bx bx-bell'></i>
-                            </Badge>
-                        </a>
-                    </div>
-                    <div className="profile">
+
+                    <div onClick={()=>navigate('/settings')} className="profile">
                         <div className="profileImg">
                             <img src={user.photo} alt="User"/>
                         </div>

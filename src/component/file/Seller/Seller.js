@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Input, Pagination, Select, Switch, Table} from "antd";
+import { Input, Pagination, Switch, Table} from "antd";
 import './Seller.scss'
-import {Outlet, useLocation, useNavigate} from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import classNames from 'classnames';
 import {SearchOutlined} from "@ant-design/icons";
 import axios from "../../axios/axios";
@@ -9,9 +9,8 @@ import {toast, ToastContainer} from "react-toastify";
 
 const Seller = () => {
     const navigate=useNavigate();
-    const [isCurrent,setCurrent]=useState(true)
-    const location = useLocation();
-    const currentPathname = location.pathname;
+    const [isCurrent,setCurrent]=useState(1)
+    const [allAmount,setAllAmount]=useState()
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const columns = [
@@ -47,7 +46,7 @@ const Seller = () => {
             title: 'Shop',
             dataIndex: '1',
             render: (_, record) => (
-                <li>{record.market.name}</li>
+               <li>{record.market.name}</li>
             ),
 
         }, {
@@ -62,19 +61,26 @@ const Seller = () => {
             className: (record) => classNames('status-column', { 'status-false': !record.status })
         },
     ];
-
-    useEffect(() => {
-        axios.get('/list/sellers',{
+const  getSeller=(count)=>{
+        axios.get(`/list/sellers?page_number=${count}`,{
             headers:{
                 Authorization:`Bearer ${localStorage.getItem('access')}`
             }
         }).then((res)=>{
             setLoading(false)
+            setAllAmount(res.data.count)
             console.log(res.data.results)
             setData(res.data.results)
         }).catch((error)=>{
-            console.log(error)
+            setLoading(false)
+            if(error.response.status===401){
+                localStorage.clear()
+                window.location.href='/login'
+            }
         })
+    }
+    useEffect(() => {
+getSeller(1)
     }, []);
     const handleStatusChange = (id, checked) => {
         const updatedData = data.map((item) =>
@@ -101,6 +107,10 @@ const Seller = () => {
 
 
 
+const onPagiantion = (e)=>{
+    setCurrent(e)
+    getSeller(e)
+}
 
     return (
          <div className="container moderator">
@@ -121,7 +131,7 @@ const Seller = () => {
                     }
 
                 />
-                {/*{data.length>10?<Pagination className="pagination" simple defaultCurrent={2} total={0} />:<></>}*/}
+                {(data.length >= 10||allAmount>=10)?<Pagination onChange={onPagiantion} className="pagination" simple defaultCurrent={1} current={isCurrent} total={allAmount} />:<></>}
             </div>
         </div>
 

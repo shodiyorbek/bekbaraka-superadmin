@@ -1,8 +1,6 @@
 import React, { useState} from 'react';
-import { Input, Pagination, Select, Switch, Table} from "antd";
+import { Input, Pagination, Select, Table} from "antd";
 import './Payment.scss'
-import { useLocation, useNavigate} from "react-router-dom";
-import classNames from 'classnames';
 import {SearchOutlined} from "@ant-design/icons";
 
 const Payment = () => {

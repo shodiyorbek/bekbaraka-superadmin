@@ -5,7 +5,7 @@ const ImgUpload = ({ onChange, src }) => (
             <div className="img-wrap img-upload">
                 <img accessKey={'image/png'} htmlFor="photo-upload" src={src} alt="Uploaded" />
             </div>
-            <input accept="image/*" id="photo-upload" type="file" onChange={onChange} />
+            <input accept="image/png,image/jpg,image/jpeg" id="photo-upload" type="file" onChange={onChange} />
         </label>
 
     </div>

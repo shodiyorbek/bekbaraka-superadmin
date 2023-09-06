@@ -13,7 +13,7 @@ const verifyCode = () => {
     const [isExpire,setIsExpire]=useState(false)
     const handleCode =(e)=>{
         const value = e.target.value;
-        if(e.target.value.length==6){
+        if(e.target.value.length===6){
             setEnable(true)
         }
         else if(e.target.value.length<6){

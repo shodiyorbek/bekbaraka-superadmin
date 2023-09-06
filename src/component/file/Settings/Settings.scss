@@ -4,6 +4,7 @@
     margin-bottom: 5px;
   }
   .user{
+
     .main-section{
       display: flex !important;
       flex-direction: row;
@@ -27,7 +28,48 @@
         width: fit-content !important;
       }
     }
+    .space{
+      width: 200px;
+      border: 1px solid green;
+      background: #000;
+      height: 200px;
+    }
   }
+  .password{
+      display: flex !important;
+      flex-direction: row;
+      margin-top: 31px;
+      .form{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+      }
+      .main-inputs{
+        margin: 0 auto;
+        width: 60%;
+        display: grid;
+        grid-template-columns: repeat(2,minmax(0,1fr));
+        gap: 20px;
+        .button{
+          width: 100%;
+        }
+      }
+      .image{
+        margin: 0 auto;
+        width: 205px;
+      }
+    }
+    .space{
+      width: 200px;
+      background: #000;
+      height: 200px;
+    }
+
+
+
+
   .language{
   width: 100%;
     margin: 0 auto;
@@ -62,8 +104,8 @@ display: flex;
       .country-info{
         margin-left: 15px;
         display: flex;
-        align-items: start;
-        justify-content: start;
+        align-items: flex-start;
+        justify-content: flex-start;
         flex-direction: column;
         .title{
           margin: 0;

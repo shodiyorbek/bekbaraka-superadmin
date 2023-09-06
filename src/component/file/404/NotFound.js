@@ -13,7 +13,7 @@ const YourComponent = () => {
         <div className="not-found">
             {/* About section */}
             <div className="about">
-                <a className="bg_links social portfolio" href="https://www.rafaelalucas.com" target="_blank">
+                <a className="bg_links social portfolio" href="https://www.rafaelalucas.com" target="_blank" rel='noreferrer'>
                     <span className="icon"></span>
                 </a>
                 {/* Add other social links... */}

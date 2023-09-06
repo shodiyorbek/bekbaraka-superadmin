@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Input, Pagination, Select, Switch, Table} from "antd";
+import {Button, Input, Pagination, Switch, Table} from "antd";
 import './Moderator.scss'
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import classNames from 'classnames';
@@ -9,11 +9,12 @@ import {toast, ToastContainer} from "react-toastify";
 
 const Moderator = () => {
     const navigate=useNavigate();
-    const [isCurrent,setCurrent]=useState(true)
     const location = useLocation();
     const currentPathname = location.pathname;
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentPage,setCurrentPage]=useState(1)
+    const [amount,setAmount]=useState(0)
     const columns = [
         {
             title: '№',
@@ -55,21 +56,26 @@ const Moderator = () => {
             className: (record) => classNames('status-column', { 'status-false': !record.status })
         },
     ];
-
+const getModerators=(pageCount)=>{
+    setLoading(true)
+    axios.get(`/super/list/moderator/?page_number=${pageCount}`,{
+        headers:{
+            Authorization:`Bearer ${localStorage.getItem('access')}`
+        }
+    }).then((res)=>{
+        setLoading(false)
+        setAmount(res.data.count)
+        setData(res.data.results)
+    }).catch((error)=>{
+        if(error.response.status===401){
+            localStorage.clear()
+            window.location.href='/login'
+        }
+    })
+}
     useEffect(() => {
-        axios.get('/super/list/moderator/',{
-            headers:{
-                Authorization:`Bearer ${localStorage.getItem('access')}`
-            }
-        }).then((res)=>{
-            setLoading(false)
-            setData(res.data.results)
-        }).catch((error)=>{
-            if(error.response.status===401){
-                localStorage.clear()
-                window.location.href='/login'
-            }
-        })
+        setCurrentPage(1)
+getModerators(1)
     }, []);
     const handleStatusChange = (id, checked) => {
         const updatedData = data.map((item) =>
@@ -99,6 +105,10 @@ const Moderator = () => {
     const add = () =>{
     navigate('add')
 }
+const pagination = (e)=>{
+getModerators(e)
+    setCurrentPage(e)
+}
 
     return (
         <>{currentPathname==='/moderator'? <div className="container moderator">
@@ -124,7 +134,7 @@ const Moderator = () => {
                     }
 
                 />
-                {data.length>10?<Pagination className="pagination" simple defaultCurrent={2} total={0} />:<></>}
+                {data.length>=10||amount>10?<Pagination onChange={pagination} className="pagination" simple defaultCurrent={1} total={amount} current={currentPage} />:<></>}
             </div>
         </div>:(currentPathname==='/moderator/add')?<Outlet/>:<></>}</>
 

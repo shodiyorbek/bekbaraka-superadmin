@@ -39,7 +39,7 @@ function Timer({isValid}) {
         }
 
 
-    }, [timeLeft]);
+    }, [timeLeft,isValid]);
 
     function isTimeLeft() {
         return timeLeft > -1;

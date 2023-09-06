@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import {Button, Form, Input, message, Select} from 'antd';
+import {Button, Form, Input, Select} from 'antd';
 import './Moderator.scss';
-import { useNavigate } from 'react-router-dom';
 import ImgUpload from "../lib/ImageUploader/Uploader";
 import PhoneInput from "react-phone-input-2";
 import axios from "../../axios/axios";
 import {toast, ToastContainer} from "react-toastify";
 
 const AddModerator = () => {
-    const navigate = useNavigate();
+
     const [form] = Form.useForm();
     const [submittable,setSubmittable]= useState(false)
     const [image,setImage]=useState()

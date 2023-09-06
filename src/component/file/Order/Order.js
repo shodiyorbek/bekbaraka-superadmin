@@ -1,7 +1,6 @@
 import React, { useState} from 'react';
 import { Input, Pagination, Select, Switch, Table} from "antd";
 import './Order.scss'
-import { useLocation, useNavigate} from "react-router-dom";
 import classNames from 'classnames';
 import {SearchOutlined} from "@ant-design/icons";
 

@@ -1,19 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Input, Pagination, Select, Switch, Table} from "antd";
+import { Input, Pagination, Switch, Table} from "antd";
 import './Supplier.scss'
-import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import classNames from "classnames";
 import {SearchOutlined} from "@ant-design/icons";
 import axios from "../../axios/axios";
-import {toast} from "react-toastify";
 
 const Supplier = () => {
-    const navigate=useNavigate();
-    const [isCurrent,setCurrent]=useState(true)
-    const location = useLocation();
-    const currentPathname = location.pathname;
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [current,setCurrent]=useState(1)
+    const [amount,setAmount]=useState()
     const columns = [
         {
             title: '№',
@@ -67,18 +63,21 @@ const Supplier = () => {
         );
         setData(updatedData);
     };
-    const getSuppliers = ()=>{
-        axios.get('/list/suppliers/',{
+    const getSuppliers = (countPage)=>{
+        setLoading(true)
+        axios.get(`/list/suppliers/?page_number=${countPage}`,{
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('access')}`,
                 'Content-type':'multipart/formdata'
             }
         }).then((res) => {
-
+setLoading(false)
             console.log(res)
+            setAmount(res.data.count)
             setData(res.data.results)
 
         }).catch((err) => {
+            setLoading(false)
             console.log(err)
             if(err.response.status===401){
                 localStorage.clear()
@@ -89,10 +88,13 @@ const Supplier = () => {
     }
 
     useEffect(() => {
-        getSuppliers()
+        getSuppliers(1)
     }, []);
 
-
+const pagination = (e)=>{
+    getSuppliers(e)
+    setCurrent(e)
+}
     return (
         <div className="container moderator">
             <div className="up">
@@ -110,7 +112,7 @@ const Supplier = () => {
                     }
 
                 />
-                {data.length>10?<Pagination className="pagination" simple defaultCurrent={2} total={0} />:<></>}
+                {data.length>=10||amount>=10?<Pagination onChange={pagination} className="pagination" simple defaultCurrent={1} total={amount} current={current} />:<></>}
             </div>
         </div>
 

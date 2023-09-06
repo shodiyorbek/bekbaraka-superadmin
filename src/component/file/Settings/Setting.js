@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './Settings.scss'
-import {Button, Checkbox, Form, Input, message, Radio, Select} from "antd";
+import {Button, Form, Input, Radio, Select} from "antd";
 import ImgUpload from "../lib/ImageUploader/Uploader";
 import PhoneInput from "react-phone-input-2";
 import axios from "../../axios/axios";
@@ -9,45 +9,46 @@ import {toast, ToastContainer} from "react-toastify";
 
 const Setting = () => {
     const [form] = Form.useForm();
+    const [form2] = Form.useForm();
     const [selectedLanguage, setSelectedLanguage] = useState('uz');
-    const [image,setImage]=useState()
-    const [temp,setTemp]=useState()
-    const [loading,setLoading]=useState(false)
+    const [image, setImage] = useState()
+    const [temp, setTemp] = useState()
+    const [loading, setLoading] = useState(false)
     const [imagePreviewUrl, setImagePreviewUrl] = useState(
         "https://cdn.landesa.org/wp-content/uploads/default-user-image.png"
     );
-    const [isSetImage,setIsSetImage]=useState(false)
+    const [isSetImage, setIsSetImage] = useState(false)
 
     const onFinish = (values) => {
         setLoading(true)
         console.log(values);
         const formData = new FormData();
-        if(isSetImage){
-            formData.append('photo',image)
+        if (isSetImage) {
+            formData.append('photo', image)
         }
-        formData.append('first_name',values.first_name)
-        formData.append('last_name',values.last_name)
-        if(temp.phone_number!==values.phone_number){
-            formData.append('phone_number',values.phone_number)
+        formData.append('first_name', values.first_name)
+        formData.append('last_name', values.last_name)
+        if (temp.phone_number !== values.phone_number) {
+            formData.append('phone_number', values.phone_number)
 
         }
-        formData.append('sex',values.sex)
+        formData.append('sex', values.sex)
 
         const token = localStorage.getItem('access');
         const decoded = jwt_decode(token);
         const userId = decoded?.user_id;
-        axios.patch(`/change-information/${userId}/`,formData,{
-            headers:{
-                'Content-type':'multipart/form-data',
-                Authorization:`Bearer ${localStorage.getItem('access')}`
+        axios.patch(`/change-information/${userId}/`, formData, {
+            headers: {
+                'Content-type': 'multipart/form-data',
+                Authorization: `Bearer ${localStorage.getItem('access')}`
             }
-        }).then((res)=>{
+        }).then((res) => {
             console.log(res)
             setLoading(false)
             toast.info('User muofiqiatli tahrirlandi', {
                 position: toast.POSITION.TOP_RIGHT
             });
-        }).catch((err)=>{
+        }).catch((err) => {
             console.log(err)
             setLoading(false)
         })
@@ -58,23 +59,23 @@ const Setting = () => {
         const userId = decoded?.user_id;
         console.log(userId)
 
-        axios.get(`/super/get_superuser/${userId}/`,{
-            headers:{
-                Authorization:`Bearer ${localStorage.getItem('access')}`
+        axios.get(`/super/get_superuser/${userId}/`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('access')}`
             }
-        }).then((res)=>{
+        }).then((res) => {
             console.log(res.data)
             setTemp(res.data)
             setImagePreviewUrl(res.data.photo)
             form.setFieldsValue(res.data)
 
-        }).catch((err)=>{
-            // if(err.response.status===401){
-            //     localStorage.clear()
-            //     window.location.href = '/login'
-            // }
+        }).catch((err) => {
+            if(err.response.status===401){
+                localStorage.clear()
+                window.location.href = '/login'
+            }
         })
-    }, []);
+    }, [form]);
     const photoUpload = (e) => {
         e.preventDefault();
         setIsSetImage(true)
@@ -94,32 +95,59 @@ const Setting = () => {
         setSelectedLanguage(value);
 
     };
+
+    const onFinishPassword = (values) => {
+        const formData = new FormData();
+
+
+
+        formData.append('password',values.password)
+        formData.append('confirm_password',values.confirm)
+        const token = localStorage.getItem('access');
+        const decoded = jwt_decode(token);
+        const userId = decoded?.user_id;
+        axios.patch(`/change-information/${userId}/`, formData, {
+            headers: {
+                'Content-type': 'multipart/form-data',
+                Authorization: `Bearer ${localStorage.getItem('access')}`
+            }
+        }).then((res) => {
+            toast.info('User paroli tahrirlandi', {
+                position: toast.POSITION.TOP_RIGHT
+            });
+        }).catch((err) => {
+            toast.error(err.response.data.non_field_errors[0], {
+                position: toast.POSITION.TOP_RIGHT
+            });
+            console.log(err)
+        })
+    };
     return (
         <div className="container settings">
             <ToastContainer/>
-            <div className="up" ></div>
+            <div className="up"></div>
             <div className="user">
                 <h1>Profile</h1>
                 <div className="main-section">
                     <Form
-                        style={{width:'100%'}}
+                        style={{width: '100%'}}
                         className="form"
                         form={form}
                         onFinish={onFinish}
                         layout="vertical"
                         autoComplete="off"
                     >
-                        <Form.Item className="image" name="photo" label="" >
-                            <ImgUpload onChange={photoUpload} src={imagePreviewUrl} />
+                        <Form.Item className="image" name="photo" label="">
+                            <ImgUpload onChange={photoUpload} src={imagePreviewUrl}/>
                         </Form.Item>
                         <div className="main-inputs">
-                            <Form.Item  name="first_name" label="Name" >
-                                <Input size='large' />
+                            <Form.Item name="first_name" label="Name">
+                                <Input size='large'/>
                             </Form.Item>
                             <Form.Item name="last_name" label="Surname">
-                                <Input  size='large'/>
+                                <Input size='large'/>
                             </Form.Item>
-                            <Form.Item name="phone_number" label="Phone number" >
+                            <Form.Item name="phone_number" label="Phone number">
                                 <PhoneInput
                                     countryCodeEditable={false}
                                     inputProps={{
@@ -128,12 +156,12 @@ const Setting = () => {
                                     }}
                                     country={'uz'}
                                     disableDropdown={true}
-                                    inputStyle={{width:'100%',height:40}}
+                                    inputStyle={{width: '100%', height: 40}}
 
 
                                 />
                             </Form.Item>
-                            <Form.Item name="sex" label="Gender" >
+                            <Form.Item name="sex" label="Gender">
                                 <Select
                                     size='large'
                                     defaultValue=""
@@ -141,7 +169,7 @@ const Setting = () => {
                                         {
                                             value: '',
                                             label: 'Jinsni tanlang',
-                                        },{
+                                        }, {
                                             value: 'male',
                                             label: 'Erkak',
                                         },
@@ -155,9 +183,10 @@ const Setting = () => {
                             </Form.Item>
 
 
-
+                            <div></div>
                             <Form.Item label=" ">
-                                <Button disabled={loading} size='large' htmlType='submit' className="button" type="primary" >
+                                <Button disabled={loading} size='large' htmlType='submit' className="button"
+                                        type="primary">
                                     Submit
                                 </Button>
                             </Form.Item>
@@ -165,16 +194,81 @@ const Setting = () => {
                     </Form>
                 </div>
             </div>
+            <div className='password'>
+
+
+                <Form
+                    form={form2}
+                    name="register"
+                    onFinish={onFinishPassword}
+                    scrollToFirstError
+                    layout={"vertical"}
+                    className='form'
+                >
+                    <Form.Item className="image" name="photo" label="">
+                    </Form.Item>
+                    <div className='main-inputs'>
+
+                        <Form.Item
+                            name="password"
+                            label="Password"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your password!',
+                                },
+                            ]}
+                            hasFeedback
+                        >
+                            <Input.Password size={"large"}/>
+                        </Form.Item>
+
+                        <Form.Item
+                            name="confirm"
+                            label="Confirm Password"
+                            dependencies={['password']}
+                            hasFeedback
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please confirm your password!',
+                                },
+                                ({getFieldValue}) => ({
+                                    validator(_, value) {
+                                        if (!value || getFieldValue('password') === value) {
+                                            return Promise.resolve();
+                                        }
+                                        return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                                    },
+                                }),
+                            ]}
+                        >
+                            <Input.Password size={"large"}/>
+                        </Form.Item>
+
+
+                        <div></div>
+                        <Form.Item label=" ">
+                            <Button className='button' size={"large"} type="primary" htmlType="submit">
+                                Saqlash
+                            </Button>
+                        </Form.Item>
+                    </div>
+                </Form>
+            </div>
             <div className="language">
                 <h1>Interfeys tili</h1>
-                <Radio.Group className="language"  value={selectedLanguage}>
+                <Radio.Group className="language" value={selectedLanguage}>
 
                     <button onClick={() => handleButtonClick('ru')}>
                         <div className="info">
                             <div className="img">
-                                <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <mask id="mask0_548_31329" >
-                                        <path d="M12 22.5C17.5228 22.5 22 18.0228 22 12.5C22 6.97715 17.5228 2.5 12 2.5C6.47715 2.5 2 6.97715 2 12.5C2 18.0228 6.47715 22.5 12 22.5Z" fill="#F4F5F5"></path>
+                                <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <mask id="mask0_548_31329">
+                                        <path
+                                            d="M12 22.5C17.5228 22.5 22 18.0228 22 12.5C22 6.97715 17.5228 2.5 12 2.5C6.47715 2.5 2 6.97715 2 12.5C2 18.0228 6.47715 22.5 12 22.5Z"
+                                            fill="#F4F5F5"></path>
                                     </mask>
                                     <g mask="url(#mask0_548_31329)">
                                         <rect x="2" y="2.5" width="20" height="20" fill="#F4F5F5"></rect>
@@ -194,9 +288,12 @@ const Setting = () => {
                     <button onClick={() => handleButtonClick('uz')}>
                         <div className="info">
                             <div className="img">
-                                <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <mask id="mask0_548_31336" >
-                                        <path d="M12 22.5C17.5228 22.5 22 18.0228 22 12.5C22 6.97715 17.5228 2.5 12 2.5C6.47715 2.5 2 6.97715 2 12.5C2 18.0228 6.47715 22.5 12 22.5Z" fill="#F4F5F5"></path>
+                                <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <mask id="mask0_548_31336">
+                                        <path
+                                            d="M12 22.5C17.5228 22.5 22 18.0228 22 12.5C22 6.97715 17.5228 2.5 12 2.5C6.47715 2.5 2 6.97715 2 12.5C2 18.0228 6.47715 22.5 12 22.5Z"
+                                            fill="#F4F5F5"></path>
                                     </mask>
                                     <g mask="url(#mask0_548_31336)">
                                         <rect x="2" y="2.5" width="20" height="20" fill="#0099B5"></rect>
@@ -206,8 +303,12 @@ const Setting = () => {
                                         <rect x="2" y="9" width="20" height="7" fill="#F4F5F5"></rect>
                                     </g>
                                     <g clip-path="url(#clip0_548_31336)">
-                                        <path d="M7.07142 7.77467C7.89506 7.77467 8.56276 7.10698 8.56276 6.28333C8.56276 5.45969 7.89506 4.79199 7.07142 4.79199C6.24777 4.79199 5.58008 5.45969 5.58008 6.28333C5.58008 7.10698 6.24777 7.77467 7.07142 7.77467Z" fill="white"></path>
-                                        <path d="M7.56861 7.77467C8.39226 7.77467 9.05995 7.10698 9.05995 6.28333C9.05995 5.45969 8.39226 4.79199 7.56861 4.79199C6.74497 4.79199 6.07727 5.45969 6.07727 6.28333C6.07727 7.10698 6.74497 7.77467 7.56861 7.77467Z" fill="#0099B5"></path>
+                                        <path
+                                            d="M7.07142 7.77467C7.89506 7.77467 8.56276 7.10698 8.56276 6.28333C8.56276 5.45969 7.89506 4.79199 7.07142 4.79199C6.24777 4.79199 5.58008 5.45969 5.58008 6.28333C5.58008 7.10698 6.24777 7.77467 7.07142 7.77467Z"
+                                            fill="white"></path>
+                                        <path
+                                            d="M7.56861 7.77467C8.39226 7.77467 9.05995 7.10698 9.05995 6.28333C9.05995 5.45969 8.39226 4.79199 7.56861 4.79199C6.74497 4.79199 6.07727 5.45969 6.07727 6.28333C6.07727 7.10698 6.74497 7.77467 7.56861 7.77467Z"
+                                            fill="#0099B5"></path>
                                         <path d="M10.352 7.17822L10.26 7.4616L10.4017 7.50883" fill="white"></path>
                                         <path d="M10.3522 7.17822L10.4442 7.4616L10.3025 7.50883" fill="white"></path>
                                         <path d="M10.6358 7.38477H10.3375V7.53391" fill="white"></path>
@@ -315,7 +416,8 @@ const Setting = () => {
                                     </g>
                                     <defs>
                                         <clipPath id="clip0_548_31336">
-                                            <rect width="8.72642" height="3.87841" fill="white" transform="translate(5 4.29492)"></rect>
+                                            <rect width="8.72642" height="3.87841" fill="white"
+                                                  transform="translate(5 4.29492)"></rect>
                                         </clipPath>
                                     </defs>
                                 </svg>
