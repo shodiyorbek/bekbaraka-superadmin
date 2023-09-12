@@ -4,12 +4,15 @@ import './Supplier.scss'
 import classNames from "classnames";
 import {SearchOutlined} from "@ant-design/icons";
 import axios from "../../axios/axios";
+import {toast} from "react-toastify";
+
 
 const Supplier = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [current,setCurrent]=useState(1)
     const [amount,setAmount]=useState()
+    const [isSearching,setIsSearching]=useState(false)
     const columns = [
         {
             title: '№',
@@ -62,6 +65,18 @@ const Supplier = () => {
             item.id === id ? { ...item, status: checked } : item
         );
         setData(updatedData);
+        axios.patch(`/seller/change/status/${id}`,{status:checked},{
+            headers:{
+                Authorization:`Bearer ${localStorage.getItem('access')}`
+            }
+        }).then((res)=>{
+console.log(res)
+        }).catch((err)=>{
+            if(err.res.status===401){
+                localStorage.clear()
+                window.location.reload()
+            }
+        })
     };
     const getSuppliers = (countPage)=>{
         setLoading(true)
@@ -95,10 +110,37 @@ const pagination = (e)=>{
     getSuppliers(e)
     setCurrent(e)
 }
+    const onSearch = (e) => {
+        setIsSearching(true)
+        if (e.target.value.length === 0) {
+            getSuppliers(1)
+            setCurrent(1)
+            setIsSearching(false)
+        } else {
+            setLoading(true)
+            axios.get(`/search/supplier/role/${e.target.value}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('access')}`
+                }
+            }).then((res) => {
+                console.log(res)
+
+                setData(res.data)
+                setLoading(false)
+                console.log(res.data)
+            }).catch((error) => {
+                console.log(error)
+                setLoading(false)
+                setData([])
+            })
+
+        }
+
+    }
     return (
         <div className="container moderator">
             <div className="up">
-                <Input className={"search-input"} prefix={<SearchOutlined />} size={"large"} placeholder="Search" />
+                <Input onChange={onSearch} className={"search-input"} prefix={<SearchOutlined />} size={"large"} placeholder="Search" />
 
             </div>
             <div className="main">
@@ -112,7 +154,7 @@ const pagination = (e)=>{
                     }
 
                 />
-                {data.length>=10||amount>=10?<Pagination onChange={pagination} className="pagination" simple defaultCurrent={1} total={amount} current={current} />:<></>}
+                {(data.length>=10||amount>=10)&&!isSearching?<Pagination onChange={pagination} className="pagination" simple defaultCurrent={1} total={amount} current={current} />:<></>}
             </div>
         </div>
 

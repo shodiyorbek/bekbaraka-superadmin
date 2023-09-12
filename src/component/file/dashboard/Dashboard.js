@@ -91,7 +91,7 @@ const Dashboard = () => {
             setIsloaded(true)
         }).catch((err)=>{
             setIsloaded(true)
-if(err.response.status===401){
+if(err.response.status===401||err.response.status===403){
     localStorage.clear()
     window.location.href = '/login'
 }

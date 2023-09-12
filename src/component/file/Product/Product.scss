@@ -1,31 +1,211 @@
-.moderator{
-
+.products{
+  width: 95% !important;
   .main{
+    display: grid;
+    grid-template-columns: repeat(4,minmax(0,1fr));
     margin-top: 39px;
+    gap: 10px;
+
+  }
+  .none{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100% !important;
+    margin: 0 auto;
+    height: 700px;
+    .inner{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      span{
+        font-size: 20px;
+        font-weight: 700;
+      }
+    }
   }
 }
 .add{
+  .line{
+    width: 100%;
+    height: 1px;
+    background: #000;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
   .main-section{
-    display: flex !important;
-    flex-direction: row;
-margin-top: 31px;
-  .form{
+    display: flex;
+    flex-direction: column !important;
+    align-items:start ;
+    .header {
+      .categories {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+    }}
+  .quill  {
+    resize: none !important;
+    width: 900px;
+    .ql-editor{
+      min-height: 200px;
+    }
+  }
+  .title{
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    span{
+      color: red;
+
+    }
+  }
+  .reqirment{
+    li{
+      font-size: 13px;
+      list-style: none;
+      margin-bottom: 7px;
+      span{
+        font-weight: 600;
+      }
+    }
+
+
+  }
+  .uploader{
+    height: auto !important;
+    .ant-upload-list-item{
+      height: 142px !important;
+    }
+  }
+  .ant-upload-select{
+    height: 142px !important;
+  }
+  .ant-upload-list-item-container{
+    height: 142px !important;
+  }
+  .chips{
+    padding:5px 10px;
+    border: 1px solid red;
+    border-radius: 5px;
+    margin-bottom: 5px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    button{
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+    button:nth-child(1){
+      width: 90%;
+      text-align: start;
+      height: 100%;
+    }
   }
-.main-inputs{
-  margin: 0 auto;
-  width: 60%;
-  display: grid;
-  grid-template-columns: repeat(2,minmax(0,1fr));
-  gap: 20px;
-  .button{
+  .small-chips{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+    .chip{
+      padding: 2px 5px;
+      border: 1px solid rgba(0, 0, 0, 0.34);
+      margin-bottom: 5px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+  }
+  .all-chips{
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+}
+.checkboxs{
+  display: flex;
+  flex-direction: column;
+  .check-item{
+    padding: 14px 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+  }
+
+}
+.product{
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 5px;
+  .upper{
+    display: flex;
+    justify-content: space-between;
+  }
+  .top-buttons{
     width: 100%;
+    flex-grow: 1;
+    background: inherit;
+    border-radius: 4px;
+    padding: 4px 8px;
+    border: 1px solid red;
+    text-align: center;
+    &.active{
+      border: 1px solid yellowgreen;
+    }
+  }
+  .upper-info{
+    display: flex;
+    gap: 5px;
+    button{
+      height: 25px;
+      width: 30px;
+    }
+
+  }
+  .infos{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    div{
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      span{
+        color: #94979e;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 16px;
+        letter-spacing: -.24px;
+      }
+      strong{
+        font-style: normal;
+        font-size: 12px;
+        line-height: 16px;
+        letter-spacing: -.24px;
+      }
+    }
   }
 }
-    .image{
-      margin: 0 auto;
-      width: fit-content !important;
+@media (max-width: 1500px) {
+  .product{
+    .upper{
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
+    .infos{
+      width: 100% !important;
     }
   }
 }

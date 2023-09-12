@@ -92,10 +92,6 @@ getSeller(1)
             }
         }).then((res)=>{
             console.log(res)
-            toast.info("Sotuvchi statusi o'zgartirildi", {
-                position: toast.POSITION.TOP_RIGHT
-            });
-
         }).catch((err)=>{
             if(err.response.status===401){
                 localStorage.clear()
