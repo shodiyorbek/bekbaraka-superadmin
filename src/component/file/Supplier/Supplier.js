@@ -143,6 +143,7 @@ const pagination = (e)=>{
                 <Input onChange={onSearch} className={"search-input"} prefix={<SearchOutlined />} size={"large"} placeholder="Search" />
 
             </div>
+            {(data.length>=10||amount>=10)&&!isSearching?<Pagination onChange={pagination} className="pagination" simple defaultCurrent={1} total={amount} current={current} />:<></>}
             <div className="main">
                 <Table
                     pagination={false}
@@ -154,7 +155,6 @@ const pagination = (e)=>{
                     }
 
                 />
-                {(data.length>=10||amount>=10)&&!isSearching?<Pagination onChange={pagination} className="pagination" simple defaultCurrent={1} total={amount} current={current} />:<></>}
             </div>
         </div>
 

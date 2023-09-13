@@ -3,6 +3,7 @@ import './home.scss'
 import {NavLink, Outlet, useNavigate} from "react-router-dom";
 import {Modal} from "antd";
 import { ExclamationCircleFilled } from '@ant-design/icons';
+import axios from "../../axios/axios";
 
 
 
@@ -23,8 +24,21 @@ const Home = () => {
             icon: <ExclamationCircleFilled />,
             content: 'When clicked the OK button, this dialog will be closed after 1 second',
             onOk() {
-                localStorage.clear()
-               navigate('/login')
+
+                axios.post('/logout/',{
+                    access:localStorage.getItem('access'),
+                    refresh:localStorage.getItem('refresh')
+                },{
+                    headers:{
+                        Authorization:`Bearer ${localStorage.getItem('access')}`
+                    }
+                }).then((res)=>{
+                    localStorage.clear()
+                    navigate('/login')
+                }).catch((err)=>{
+                    console.log(err)
+                })
+
             },
             onCancel() {},
         });

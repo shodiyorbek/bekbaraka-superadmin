@@ -62,6 +62,7 @@ const Seller = () => {
         },
     ];
 const  getSeller=(count)=>{
+    setLoading(true)
         axios.get(`/list/sellers?page_number=${count}`,{
             headers:{
                 Authorization:`Bearer ${localStorage.getItem('access')}`
@@ -116,7 +117,8 @@ const onPagiantion = (e)=>{
 
 
             </div>
-            <div className="main">
+             {(data.length >= 10||allAmount>=10)?<Pagination onChange={onPagiantion} className="pagination" simple defaultCurrent={1} current={isCurrent} total={allAmount} />:<></>}
+             <div className="main">
                 <Table
                     pagination={false}
                     columns={columns}
@@ -127,7 +129,6 @@ const onPagiantion = (e)=>{
                     }
 
                 />
-                {(data.length >= 10||allAmount>=10)?<Pagination onChange={onPagiantion} className="pagination" simple defaultCurrent={1} current={isCurrent} total={allAmount} />:<></>}
             </div>
         </div>
 

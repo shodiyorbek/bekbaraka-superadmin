@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Input, Popover, Spin, Switch    } from "antd";
+import {Input, Modal, Pagination, Spin, Switch} from "antd";
 import './Product.scss'
-import {Outlet, useLocation, useNavigate} from "react-router-dom";
-import {SearchOutlined} from "@ant-design/icons";
+import {SearchOutlined,ExclamationCircleFilled} from "@ant-design/icons";
 import axios from "../../axios/axios";
 import {toast, ToastContainer} from "react-toastify";
 
@@ -10,14 +9,17 @@ const Supplier = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [isSearching,setIsSearching] = useState(false)
+    const [amount,setAmount]=useState(0)
+    const [currentPage,setCurrentPage]=useState(1)
+    const { confirm } = Modal;
     if(loading){
         document.body.style.overflow='hidden'
     }else {
         document.body.style.overflow='auto'
     }
-    const getProducts = ()=>{
+    const getProducts = (countPage)=>{
         setLoading(true)
-        axios.get('/all/product/get/',{
+        axios.get(`/all/product/get/?limit=12&page_number=${countPage}`,{
             headers:{
                 Authorization:`Bearer ${localStorage.getItem('access')}`
             }
@@ -25,12 +27,13 @@ const Supplier = () => {
             setLoading(false)
             console.log("data",res)
             setData(res.data.results)
+            setAmount(res.data.count)
         }).catch((err)=>{
             setLoading(false)
         })
     }
     useEffect(() => {
-        getProducts()
+        getProducts(1)
     }, []);
 
     const changeStatus = (id,cheked)=>{
@@ -55,7 +58,7 @@ const Supplier = () => {
     const onSearch = (e) => {
         setIsSearching(true)
         if (e.target.value.length === 0) {
-            getProducts()
+            getProducts(1)
             setIsSearching(false)
         } else {
             setLoading(true)
@@ -75,6 +78,38 @@ const Supplier = () => {
         }
 
     }
+    const pagination = (e)=>{
+        setCurrentPage(e)
+        getProducts(e)
+    }
+    const showPropsConfirm = (id) => {
+        confirm({
+            title: 'Are you sure delete this product?',
+            icon: <ExclamationCircleFilled />,
+            content: 'Some descriptions',
+            okText: 'Yes',
+            okType: 'danger',
+            centered:true,
+            cancelText: 'No',
+            onOk() {
+                const temp=data.filter(item=>item.id!==id)
+                setData(temp)
+                axios.delete(`/product/delete/${id}`,{
+                    headers:{
+                        Authorization:`Bearer ${localStorage.getItem('access')}`
+                    }
+                }).then((res)=>{
+                    console.log(res)
+
+                })
+                console.log('OK');
+
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
+    };
     return (
         <div className="container moderator products">
             <ToastContainer/>
@@ -86,6 +121,8 @@ const Supplier = () => {
 
                 </div>
             </div>
+            {(data.length>=12||amount>12)&&!isSearching?<Pagination onChange={pagination} className="pagination moderator-product-pagination" simple defaultCurrent={1} total={amount} pageSize={12} current={currentPage} />:<></>}
+
             <Spin wrapperClassName={'spinner'} spinning={loading} size={"large"}>
 
                 {data.length===0?<>
@@ -96,7 +133,9 @@ const Supplier = () => {
                         </div>
                     </div>
                 </>:<>
+
                     <div className="main">
+
                         {data.map((temp)=>(
                             <div className='product'>
                                 <div className='upper'>
@@ -109,23 +148,10 @@ const Supplier = () => {
                                         {temp.is_active?'Sotuvga tayyor':'Active emas'}
                                     </span>
 
-                                            <button>
+                                            <button onClick={()=>showPropsConfirm(temp.id)}>
                                                 <i className='bx bxs-trash'></i>
                                             </button>
-                                            <Popover placement="bottom" title={'Tahrirlash'} content={<>
-                                                <li>
-                                                    <a href={`/product/update/${temp.id}`}>Skuni tahrirlash</a>
-                                                </li>
-                                                <li>
-                                                    <a href={`/product/main/update/${temp.id}`}>Mahsulotni tahrirlash</a>
-                                                </li>
 
-
-                                            </>} trigger="click">
-                                                <button>
-                                                    <i className='bx bxs-edit-alt' ></i>
-                                                </button>
-                                            </Popover>
 
                                         </div>
 
