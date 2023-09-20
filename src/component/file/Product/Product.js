@@ -174,7 +174,7 @@ const Supplier = () => {
                                         <div>
                                             <span>Active</span>
                                             <strong>
-                                                <Switch checked={temp.is_active} onChange={(checked) => changeStatus(temp.id, checked)} size={'small'} /></strong>
+                                                <Switch disabled={!temp.is_price} checked={temp.is_active} onChange={(checked) => changeStatus(temp.id, checked)} size={'small'} /></strong>
                                         </div>
 
 

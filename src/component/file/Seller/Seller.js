@@ -109,15 +109,42 @@ const onPagiantion = (e)=>{
     getSeller(e)
 }
 
+    const [searching,setIsSearching]=useState(false)
+    const onSearch = (e) => {
+        setIsSearching(true)
+        if (e.target.value.length === 0) {
+            getSeller(1)
+            setCurrent(1)
+            setIsSearching(false)
+        } else {
+            setLoading(true)
+            axios.get(`/search/seller/role/${e.target.value}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('access')}`
+                }
+            }).then((res) => {
+                console.log(res)
+                setData(res.data)
+                setLoading(false)
+                console.log(res.data)
+            }).catch((error) => {
+                console.log(error)
+                setLoading(false)
+                setData([])
+            })
+
+        }
+
+    }
     return (
          <div className="container moderator">
             <ToastContainer/>
             <div className="up">
-                <Input className={"search-input"} prefix={<SearchOutlined />} size={"large"} placeholder="Search" />
+                <Input className={"search-input"} onChange={onSearch} prefix={<SearchOutlined />} size={"large"} placeholder="Search" />
 
 
             </div>
-             {(data.length >= 10||allAmount>=10)?<Pagination onChange={onPagiantion} className="pagination" simple defaultCurrent={1} current={isCurrent} total={allAmount} />:<></>}
+             {(data.length >= 10||allAmount>=10)&&!searching?<Pagination onChange={onPagiantion} className="pagination" simple defaultCurrent={1} current={isCurrent} total={allAmount} />:<></>}
              <div className="main">
                 <Table
                     pagination={false}

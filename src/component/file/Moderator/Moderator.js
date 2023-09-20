@@ -110,11 +110,39 @@ getModerators(e)
     setCurrentPage(e)
 }
 
+const [searching,setIsSearching]=useState(false)
+    const onSearch = (e) => {
+        setIsSearching(true)
+        if (e.target.value.length === 0) {
+            getModerators(1)
+            setCurrentPage(1)
+            setIsSearching(false)
+        } else {
+            setLoading(true)
+            axios.get(`/search/moderator/role/${e.target.value}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('access')}`
+                }
+            }).then((res) => {
+                console.log(res)
+                setData(res.data)
+                setLoading(false)
+                console.log(res.data)
+            }).catch((error) => {
+                console.log(error)
+                setLoading(false)
+                setData([])
+            })
+
+        }
+
+    }
+
     return (
         <>{currentPathname==='/moderator'? <div className="container moderator">
             <ToastContainer/>
             <div className="up">
-                <Input className={"search-input"} prefix={<SearchOutlined />} size={"large"} placeholder="Search" />
+                <Input className={"search-input"} onChange={onSearch} prefix={<SearchOutlined />} size={"large"} placeholder="Search" />
                 <div>
 
                     <Button onClick={add} size='large' className="button">
@@ -123,7 +151,7 @@ getModerators(e)
                 </div>
 
             </div>
-            {data.length>=10||amount>10?<Pagination onChange={pagination} className="pagination" simple defaultCurrent={1} total={amount} current={currentPage} />:<></>}
+            {(data.length>=10||amount>10)&&!searching?<Pagination onChange={pagination} className="pagination" simple defaultCurrent={1} total={amount} current={currentPage} />:<></>}
 
             <div className="main">
                 <Table
